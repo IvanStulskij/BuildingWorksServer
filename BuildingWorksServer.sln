@@ -3,19 +3,21 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33110.190
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildingWorksServer", "BuildingWorksServer\BuildingWorksServer.csproj", "{DDBF795B-28F5-46C2-BEF2-6B8451763748}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuildingWorksServer", "BuildingWorksServer\BuildingWorksServer.csproj", "{DDBF795B-28F5-46C2-BEF2-6B8451763748}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildingWorks.Infrastructure", "BuildingWorks.Infrastructure\BuildingWorks.Infrastructure.csproj", "{A0F6D110-CEFC-47EF-AD2B-581148EEC241}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuildingWorks.Infrastructure", "BuildingWorks.Infrastructure\BuildingWorks.Infrastructure.csproj", "{A0F6D110-CEFC-47EF-AD2B-581148EEC241}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildingWorks.Common", "BuildingWorks.Common\BuildingWorks.Common.csproj", "{5F302EE8-5F1B-4A75-86D8-E943B1147893}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuildingWorks.Common", "BuildingWorks.Common\BuildingWorks.Common.csproj", "{5F302EE8-5F1B-4A75-86D8-E943B1147893}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildingWorks.Repositories", "BuildingWorks.Repositories\BuildingWorks.Repositories.csproj", "{A1EEF5A4-9553-4DB3-ADD3-1488ED4FCDA4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuildingWorks.Repositories", "BuildingWorks.Repositories\BuildingWorks.Repositories.csproj", "{A1EEF5A4-9553-4DB3-ADD3-1488ED4FCDA4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildingWorks.Models", "BuildingWorks.Models\BuildingWorks.Models.csproj", "{1A60E70D-6BDE-4370-9230-693369B6C967}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuildingWorks.Models", "BuildingWorks.Models\BuildingWorks.Models.csproj", "{1A60E70D-6BDE-4370-9230-693369B6C967}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildingWorks.Profiles", "BuildingWorks.Profiles\BuildingWorks.Profiles.csproj", "{08EDD0A9-BFAB-44A8-AA39-78EC7993C5D4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuildingWorks.Profiles", "BuildingWorks.Profiles\BuildingWorks.Profiles.csproj", "{08EDD0A9-BFAB-44A8-AA39-78EC7993C5D4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildingWorks.Services", "BuildingWorks.Services\BuildingWorks.Services.csproj", "{5C537C14-3444-47A0-9039-3B10D4F1A0DB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuildingWorks.Services", "BuildingWorks.Services\BuildingWorks.Services.csproj", "{5C537C14-3444-47A0-9039-3B10D4F1A0DB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildingWorks.Validation", "BuildingWorks.Validation\BuildingWorks.Validation.csproj", "{33A14878-1A51-44B1-B017-15EB19322694}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{5C537C14-3444-47A0-9039-3B10D4F1A0DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5C537C14-3444-47A0-9039-3B10D4F1A0DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5C537C14-3444-47A0-9039-3B10D4F1A0DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{33A14878-1A51-44B1-B017-15EB19322694}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33A14878-1A51-44B1-B017-15EB19322694}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33A14878-1A51-44B1-B017-15EB19322694}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33A14878-1A51-44B1-B017-15EB19322694}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

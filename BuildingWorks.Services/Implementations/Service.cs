@@ -1,9 +1,10 @@
 ﻿using AutoMapper;
-using BuildingWorks.Common;
+using BuildingWorks.Common.Entities;
 using BuildingWorks.Models.Overviews;
 using BuildingWorks.Models.Resources;
 using BuildingWorks.Repositories.Abstractions;
 using BuildingWorks.Services.Interfaces;
+using FluentValidation;
 
 namespace BuildingWorks.Services.Implementations;
 
@@ -11,17 +12,21 @@ public abstract class Service<T, TResource> : IService<TResource>
     where T : Entity
     where TResource : IResource
 {
+    private readonly IValidator<TResource> _validator;
+
     protected IMapper Mapper { get; init; }
     protected IRepository<T> Repository { get; init; }
-
-    public Service(IMapper mapper, IRepository<T> repository)
+    
+    public Service(IMapper mapper, IRepository<T> repository, IValidator<TResource> validator)
     {
         Mapper = mapper;
         Repository = repository;
+        _validator = validator;
     }
 
     public async Task<TResource> Create(TResource resource)
     {
+        _validator.ValidateAndThrow(resource);
         var created = await Repository.Insert(Mapper.Map<T>(resource));
 
         return Mapper.Map<TResource>(created);
@@ -46,6 +51,7 @@ public abstract class Service<T, TResource> : IService<TResource>
 
     public async Task<TResource> Update(TResource resource)
     {
+        _validator.ValidateAndThrow(resource);
         var updated = await Repository.Update(Mapper.Map<T>(resource));
 
         return Mapper.Map<TResource>(updated);
@@ -59,7 +65,7 @@ public abstract class OverviewService<T, TResource, TOverview> : Service<T, TRes
 {
     protected IOverviewRepository<T> OverviewRepository { get; init; }
 
-    protected OverviewService(IMapper mapper, IOverviewRepository<T> repository) : base(mapper, repository)
+    protected OverviewService(IMapper mapper, IOverviewRepository<T> repository, IValidator<TResource> validator) : base(mapper, repository, validator)
     {
         OverviewRepository = repository;
     }

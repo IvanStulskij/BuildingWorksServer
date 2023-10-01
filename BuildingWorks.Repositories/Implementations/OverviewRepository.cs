@@ -1,4 +1,4 @@
-﻿using BuildingWorks.Common;
+﻿using BuildingWorks.Common.Entities;
 using BuildingWorks.Infrastructure;
 using BuildingWorks.Models.Overviews;
 using BuildingWorks.Repositories.Abstractions;

@@ -1,4 +1,4 @@
-﻿using BuildingWorks.Common;
+﻿using BuildingWorks.Common.Entities;
 using System.Linq.Expressions;
 
 namespace BuildingWorks.Repositories.Abstractions;

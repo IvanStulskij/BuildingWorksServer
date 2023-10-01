@@ -1,4 +1,4 @@
-﻿using BuildingWorks.Common;
+﻿using BuildingWorks.Common.Entities;
 using BuildingWorks.Models.Overviews.BuildingObjects;
 
 namespace BuildingWorks.Models.Overviews.Workers;

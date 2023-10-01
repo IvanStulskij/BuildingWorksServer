@@ -1,4 +1,4 @@
-﻿using BuildingWorks.Common;
+﻿using BuildingWorks.Common.Entities;
 using BuildingWorks.Common.Exceptions;
 using BuildingWorks.Infrastructure;
 using BuildingWorks.Repositories.Abstractions;

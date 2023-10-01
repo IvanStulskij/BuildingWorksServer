@@ -1,12 +1,13 @@
-﻿using BuildingWorks.Common;
+﻿using BuildingWorks.Common.Entities;
 using BuildingWorks.Infrastructure.Entities.Plans;
 
 namespace BuildingWorks.Infrastructure.Entities;
 
 public class BuildingObject : Entity 
 {
-    public string ObjectName { get; set; } = string.Empty; 
-    public string ObjectType { get; set; } = string.Empty;
+    public string ObjectName { get; set; } = string.Empty;
+    public BuildingObjectTypes BuildingObjectType { get; set; }
+    public string BuildingObjectTypeName { get; set; } = string.Empty;
     public string? ObjectCustomer { get; set; }
     public string ExecutorCompany { get; set; } = string.Empty;
 

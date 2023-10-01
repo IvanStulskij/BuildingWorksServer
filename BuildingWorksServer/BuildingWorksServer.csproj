@@ -24,6 +24,7 @@
     <ProjectReference Include="..\BuildingWorks.Profiles\BuildingWorks.Profiles.csproj" />
     <ProjectReference Include="..\BuildingWorks.Repositories\BuildingWorks.Repositories.csproj" />
     <ProjectReference Include="..\BuildingWorks.Services\BuildingWorks.Services.csproj" />
+    <ProjectReference Include="..\BuildingWorks.Validation\BuildingWorks.Validation.csproj" />
   </ItemGroup>
 
 </Project>

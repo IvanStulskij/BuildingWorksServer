@@ -1,4 +1,4 @@
-﻿using BuildingWorks.Common;
+﻿using BuildingWorks.Common.Entities;
 
 namespace BuildingWorks.Models.Resources;
 

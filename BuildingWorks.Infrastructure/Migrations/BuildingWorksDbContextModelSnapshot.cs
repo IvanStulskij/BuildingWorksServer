@@ -28,6 +28,13 @@ namespace BuildingWorks.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<int>("BuildingObjectType")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("BuildingObjectTypeName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("ExecutorCompany")
                         .IsRequired()
                         .HasColumnType("text");
@@ -36,10 +43,6 @@ namespace BuildingWorks.Infrastructure.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("ObjectName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("ObjectType")
                         .IsRequired()
                         .HasColumnType("text");
 
