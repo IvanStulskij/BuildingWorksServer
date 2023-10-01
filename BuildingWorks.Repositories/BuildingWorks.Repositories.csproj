@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BuildingWorks.Infrastructure\BuildingWorks.Infrastructure.csproj" />
+    <ProjectReference Include="..\BuildingWorks.Models\BuildingWorks.Models.csproj" />
+  </ItemGroup>
+
+</Project>
