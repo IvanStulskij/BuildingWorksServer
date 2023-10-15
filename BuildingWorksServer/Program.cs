@@ -1,3 +1,4 @@
+using BuildingWorks.Common.Configuration;
 using BuildingWorks.Infrastructure;
 using BuildingWorksServer.Extensions;
 using BuildingWorksServer.Logging;
@@ -14,6 +15,9 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext();
 builder.Services.ConfigureServices();
 builder.Services.AddSwaggerGen();
+
+var allowedHosts = builder.Configuration.GetSection("CommonSettings").Get<CommonSettings>().CorsAllowedHosts;
+builder.Services.ConfigrueCors(allowedHosts);
 
 var logger = new LoggerConfiguration()
   .ReadFrom.Configuration(builder.Configuration)
@@ -32,6 +36,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseCors();
 app.UseAutoWrapper();
 app.UseMiddleware<ErrorHandlingMiddleware>();
 

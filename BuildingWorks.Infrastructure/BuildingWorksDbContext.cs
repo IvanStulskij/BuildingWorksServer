@@ -1,4 +1,5 @@
 ﻿using BuildingWorks.Infrastructure.Entities;
+using BuildingWorks.Infrastructure.Entities.Joininig;
 using BuildingWorks.Infrastructure.Entities.Plans;
 using BuildingWorks.Infrastructure.Entities.Providers;
 using BuildingWorks.Infrastructure.Entities.Workers;
@@ -15,6 +16,7 @@ public class BuildingWorksDbContext : DbContext
     public DbSet<Worker> Workers { get; set; } = null!;
     public DbSet<WorkerSalary> WorkerSalaries { get; set; } = null!;
     public DbSet<Plan> Plans { get; set; } = null!;
+    public DbSet<BrigadeWorker> BrigadeWorker { get; set; } = null!;
 
     public BuildingWorksDbContext() { }
     public BuildingWorksDbContext(DbContextOptions<BuildingWorksDbContext> options) : base(options) { }

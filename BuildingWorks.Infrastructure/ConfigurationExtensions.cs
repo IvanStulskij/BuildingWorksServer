@@ -1,4 +1,5 @@
-﻿using BuildingWorks.Infrastructure.Entities.Providers;
+﻿using BuildingWorks.Infrastructure.Entities.Joininig;
+using BuildingWorks.Infrastructure.Entities.Providers;
 using BuildingWorks.Infrastructure.Entities.Workers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -14,6 +15,7 @@ public static class ConfigurationExtensions
         ConfigureBrigades(modelBuilder.Entity<Brigade>());
         ConfigureWorkers(modelBuilder.Entity<Worker>());
         ConfigureWorkerSalaries(modelBuilder.Entity<WorkerSalary>());
+        ConfigureBrigadeWorker(modelBuilder.Entity<BrigadeWorker>());
     }
 
     private static void ConfigureProviders(EntityTypeBuilder<Provider> providersBuilder)
@@ -21,6 +23,10 @@ public static class ConfigurationExtensions
         providersBuilder
             .HasMany(provider => provider.Contracts)
             .WithMany(contract => contract.Providers);
+
+        providersBuilder
+            .HasMany(provider => provider.BuildingObjects)
+            .WithMany(buildingObject => buildingObject.Providers);
     }
 
     private static void ConfigureMaterials(EntityTypeBuilder<Material> materialsBuilder)
@@ -40,15 +46,16 @@ public static class ConfigurationExtensions
 
         brigadesBuilder
             .HasMany(brigade => brigade.Workers)
-            .WithOne(brigadier => brigadier.Brigade);
+            .WithMany(worker => worker.Brigades)
+            .UsingEntity<BrigadeWorker>();
     }
 
     private static void ConfigureWorkers(EntityTypeBuilder<Worker> workersBuilder)
     {
         workersBuilder
-            .HasOne(worker => worker.Brigade)
+            .HasMany(worker => worker.Brigades)
             .WithMany(brigade => brigade.Workers)
-            .OnDelete(DeleteBehavior.Restrict);
+            .UsingEntity<BrigadeWorker>();
 
         workersBuilder
             .HasOne(worker => worker.BrigadierBrigade)
@@ -64,5 +71,14 @@ public static class ConfigurationExtensions
             .HasOne(workerSalary => workerSalary.Worker)
             .WithMany(worker => worker.WorkerSalaries)
             .OnDelete(DeleteBehavior.Cascade);
+    }
+
+    private static void ConfigureBrigadeWorker(EntityTypeBuilder<BrigadeWorker> brigadeWorkerBuilder)
+    {
+        brigadeWorkerBuilder.HasKey(brigadeWorker => new
+        {
+            brigadeWorker.BrigadesId,
+            brigadeWorker.WorkersId
+        });
     }
 }

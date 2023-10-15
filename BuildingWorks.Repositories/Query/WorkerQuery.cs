@@ -8,6 +8,6 @@ public static class WorkerQuery
     public static IQueryable<Worker> IncludeHierarchy(this IQueryable<Worker> workers)
     {
         return workers
-            .Include(worker => worker.Brigade);
+            .Include(worker => worker.Brigades);
     }
 }

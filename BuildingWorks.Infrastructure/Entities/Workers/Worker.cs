@@ -1,4 +1,5 @@
 ﻿using BuildingWorks.Common.Entities;
+using BuildingWorks.Infrastructure.Entities.Joininig;
 
 namespace BuildingWorks.Infrastructure.Entities.Workers;
 
@@ -12,8 +13,8 @@ public class Worker : Entity
 
     public Guid? BrigadierBrigadeId { get; set; }
     public virtual Brigade? BrigadierBrigade { get; set; }
-    public Guid BrigadeId { get; set; }
-    public virtual Brigade Brigade { get; set; } = null!;
+    public virtual ICollection<Brigade> Brigades { get; set; } = null!;
 
     public virtual ICollection<WorkerSalary> WorkerSalaries { get; set; } = null!;
+    public virtual ICollection<BrigadeWorker> BrigadeWorkers { get; set; } = null!;
 }

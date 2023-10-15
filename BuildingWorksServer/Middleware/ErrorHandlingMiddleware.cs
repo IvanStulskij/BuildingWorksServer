@@ -31,6 +31,18 @@ public class ErrorHandlingMiddleware
                 _ => new ApiProblemDetailsException("Something went wrong.", StatusCodes.Status500InternalServerError),
             };
         }
+        finally
+        {
+            if (!IsSuccessStatusCode(context.Response.StatusCode))
+            {
+                throw new ApiProblemDetailsException(context.Response.StatusCode);
+            }
+        }
+    }
+
+    private bool IsSuccessStatusCode(int statusCode)
+    {
+        return statusCode >= StatusCodes.Status200OK && statusCode <= 299;
     }
 
     private ApiProblemDetailsException HandleValidationException(ValidationException validationException)

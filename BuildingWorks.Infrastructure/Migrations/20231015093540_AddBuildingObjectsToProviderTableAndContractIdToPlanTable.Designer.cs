@@ -3,6 +3,7 @@ using System;
 using BuildingWorks.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BuildingWorks.Infrastructure.Migrations
 {
     [DbContext(typeof(BuildingWorksDbContext))]
-    partial class BuildingWorksDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231015093540_AddBuildingObjectsToProviderTableAndContractIdToPlanTable")]
+    partial class AddBuildingObjectsToProviderTableAndContractIdToPlanTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -35,27 +38,6 @@ namespace BuildingWorks.Infrastructure.Migrations
                     b.HasIndex("ProvidersId");
 
                     b.ToTable("BuildingObjectProvider");
-                });
-
-            modelBuilder.Entity("BuildingWorks.Infrastructure.Entities.BrigadeWorker", b =>
-                {
-                    b.Property<Guid>("BrigadesId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("WorkersId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime?>("EndWorkDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime>("StartWorkDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("BrigadesId", "WorkersId");
-
-                    b.HasIndex("WorkersId");
-
-                    b.ToTable("BrigadeWorker");
                 });
 
             modelBuilder.Entity("BuildingWorks.Infrastructure.Entities.BuildingObject", b =>
@@ -170,6 +152,7 @@ namespace BuildingWorks.Infrastructure.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<string>("AdditionalData")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Country")
@@ -218,6 +201,9 @@ namespace BuildingWorks.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<Guid>("BrigadesId")
+                        .HasColumnType("uuid");
+
                     b.Property<Guid?>("BrigadierBrigadeId")
                         .IsRequired()
                         .HasColumnType("uuid");
@@ -242,6 +228,8 @@ namespace BuildingWorks.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BrigadesId");
 
                     b.ToTable("Workers");
                 });
@@ -325,25 +313,6 @@ namespace BuildingWorks.Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("BuildingWorks.Infrastructure.Entities.BrigadeWorker", b =>
-                {
-                    b.HasOne("BuildingWorks.Infrastructure.Entities.Workers.Brigade", "Brigade")
-                        .WithMany("BrigadeWorkers")
-                        .HasForeignKey("BrigadesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BuildingWorks.Infrastructure.Entities.Workers.Worker", "Worker")
-                        .WithMany("BrigadeWorkers")
-                        .HasForeignKey("WorkersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Brigade");
-
-                    b.Navigation("Worker");
-                });
-
             modelBuilder.Entity("BuildingWorks.Infrastructure.Entities.Plans.Plan", b =>
                 {
                     b.HasOne("BuildingWorks.Infrastructure.Entities.BuildingObject", "BuildingObject")
@@ -381,6 +350,17 @@ namespace BuildingWorks.Infrastructure.Migrations
                     b.Navigation("Brigadier");
 
                     b.Navigation("BuildingObject");
+                });
+
+            modelBuilder.Entity("BuildingWorks.Infrastructure.Entities.Workers.Worker", b =>
+                {
+                    b.HasOne("BuildingWorks.Infrastructure.Entities.Workers.Brigade", "Brigade")
+                        .WithMany("Workers")
+                        .HasForeignKey("BrigadesId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Brigade");
                 });
 
             modelBuilder.Entity("BuildingWorks.Infrastructure.Entities.Workers.WorkerSalary", b =>
@@ -438,13 +418,11 @@ namespace BuildingWorks.Infrastructure.Migrations
 
             modelBuilder.Entity("BuildingWorks.Infrastructure.Entities.Workers.Brigade", b =>
                 {
-                    b.Navigation("BrigadeWorkers");
+                    b.Navigation("Workers");
                 });
 
             modelBuilder.Entity("BuildingWorks.Infrastructure.Entities.Workers.Worker", b =>
                 {
-                    b.Navigation("BrigadeWorkers");
-
                     b.Navigation("BrigadierBrigade");
 
                     b.Navigation("WorkerSalaries");
