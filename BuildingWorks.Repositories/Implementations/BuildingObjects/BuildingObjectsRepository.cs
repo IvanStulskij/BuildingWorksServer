@@ -1,5 +1,8 @@
-﻿using BuildingWorks.Infrastructure;
+﻿using BuildingWorks.Common.Exceptions;
+using BuildingWorks.Infrastructure;
 using BuildingWorks.Infrastructure.Entities;
+using BuildingWorks.Infrastructure.Entities.Providers;
+using BuildingWorks.Infrastructure.Entities.Workers;
 using BuildingWorks.Repositories.Abstractions.BuildingObjects;
 using BuildingWorks.Repositories.Abstractions.Plans;
 using BuildingWorks.Repositories.Abstractions.Workers;
@@ -26,6 +29,29 @@ public class BuildingObjectsRepository : OverviewRepository<BuildingObject>, IBu
             .FirstOrDefaultAsync(buildingObject => buildingObject.Id == buildingObjectId);
 
         return 0;
+    }
+
+    public async Task<IEnumerable<Brigade>> GetBrigades(Guid buildingObjectId)
+    {
+        var buildingObject = await Set.Include(buildingObject => buildingObject.Brigades).FirstOrDefaultAsync(buildingObject => buildingObject.Id == buildingObjectId);
+
+        if (buildingObject == null)
+        {
+            throw new EntityNotExistException($"Building object with id {buildingObjectId} doesn't exist in database");
+        }
+
+        return buildingObject.Brigades;
+    }
+
+    public async Task<IEnumerable<Provider>> GetProviders(Guid buildingObjectId)
+    {
+        var providers = await Context.BuildingObjectProvider.AsNoTracking()
+            .Include(provider => provider.Provider)
+            .Where(entity => entity.BuildingObjectId == buildingObjectId)
+            .Select(entity => entity.Provider)
+            .ToListAsync();
+
+        return providers;
     }
 
     protected override IQueryable<BuildingObject> IncludeHierarchy()

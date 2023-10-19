@@ -9,7 +9,33 @@ namespace BuildingWorksServer.Controllers.Providers;
 [Route("api/v1/[controller]")]
 public class ContractController : BuildingWorksOverviewController<ContractResource, ContractOverview>
 {
+    private readonly IContractService _service;
+
     public ContractController(IContractService service) : base(service)
     {
+        _service = service;
+    }
+
+    [HttpGet("{id}/providers")]
+    public async Task<IActionResult> GetProviders(Guid id)
+    {
+        var providers = await _service.GetProviders(id);
+
+        return Ok(providers);
+    }
+
+    [HttpGet("{id}/materials")]
+    public async Task<IActionResult> GetMaterials(Guid id)
+    {
+        var materials = await _service.GetMaterials(id);
+
+        return Ok(materials);
+    }
+
+    [HttpPost("{id}/providers")]
+    public async Task<IActionResult> AddProviderToContract(Guid id, Guid providerId)
+    {
+        await _service.AddProviderToContract(id, providerId);
+        return Ok();
     }
 }
