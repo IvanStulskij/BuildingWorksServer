@@ -19,6 +19,11 @@ public class BuildingObjectService : OverviewService<BuildingObject, BuildingObj
         _repository = repository;
     }
 
+    public async Task AddProvider(Guid buildingObjectId, Guid providerId)
+    {
+        await  _repository.AddProvider(buildingObjectId, providerId);
+    }
+
     public async Task<IEnumerable<BrigadeOverview>> GetBrigades(Guid buildingObjectId)
     {
         var brigades = await _repository.GetBrigades(buildingObjectId);

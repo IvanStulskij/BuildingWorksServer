@@ -9,8 +9,8 @@ public class Brigade : Entity
 
     public Guid BuildingObjectId { get; set; }
     public virtual BuildingObject BuildingObject { get; set; } = null!;
-    public Guid BrigadierId { get; set; }
-    public virtual Worker Brigadier { get; set; } = null!;
+    public Guid? BrigadierId { get; set; }
+    public virtual Worker? Brigadier { get; set; } = null!;
 
     public virtual ICollection<Worker> Workers { get; set; } = null!;
     public virtual ICollection<BrigadeWorker> BrigadeWorkers { get; set; } = null!;

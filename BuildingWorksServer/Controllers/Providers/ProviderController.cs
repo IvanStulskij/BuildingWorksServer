@@ -9,7 +9,18 @@ namespace BuildingWorksServer.Controllers.Providers;
 [Route("api/v1/[controller]")]
 public class ProviderController : BuildingWorksOverviewController<ProviderResource, ProviderOverview>
 {
+    private readonly IProviderService _service;
+
     public ProviderController(IProviderService service) : base(service)
     {
+        _service = service;
+    }
+
+    [HttpGet("short-infos")]
+    public async Task<IActionResult> GetShortInfos()
+    {
+        var shortInfos = await _service.GetShortInfos();
+
+        return Ok(shortInfos);
     }
 }

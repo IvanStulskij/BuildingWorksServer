@@ -15,4 +15,9 @@ public class WorkerRepository : OverviewRepository<Worker>, IWorkerRepository
     {
         return Set.IncludeHierarchy();
     }
+
+    public override async Task Delete(Guid id)
+    {
+        
+    }
 }

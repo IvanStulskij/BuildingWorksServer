@@ -2,6 +2,7 @@
 using BuildingWorks.Repositories.Abstractions.Plans;
 using BuildingWorks.Repositories.Abstractions.Providers;
 using BuildingWorks.Repositories.Abstractions.Workers;
+using BuildingWorks.Repositories.Common;
 using BuildingWorks.Repositories.Implementations.BuildingObjects;
 using BuildingWorks.Repositories.Implementations.Plans;
 using BuildingWorks.Repositories.Implementations.Providers;
@@ -22,5 +23,6 @@ public static class DependencyInjection
         services.AddScoped<IBrigadeRepository, BrigadeRepository>();
         services.AddScoped<IWorkerRepository, WorkerRepository>();
         services.AddScoped<IWorkerSalaryRepository, WorkerSalaryRepository>();
+        services.AddScoped<IDatabaseChanges, DatabaseChanges>();
     }
 }

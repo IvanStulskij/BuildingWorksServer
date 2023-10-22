@@ -31,4 +31,12 @@ public class BuildingObjectController : BuildingWorksOverviewController<Building
 
         return Ok(brigades);
     }
+
+    [HttpPost("{id}/providers")]
+    public async Task<IActionResult> AddProvider(Guid id, Guid providerId)
+    {
+        await _service.AddProvider(id, providerId);
+
+        return Ok();
+    }
 }
