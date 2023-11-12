@@ -2,6 +2,7 @@
 using BuildingWorks.Models.Resources.Providers;
 using BuildingWorks.Services.Interfaces.Providers;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics.Contracts;
 
 namespace BuildingWorksServer.Controllers.Providers;
 
@@ -24,10 +25,10 @@ public class ContractController : BuildingWorksOverviewController<ContractResour
         return Ok(providers);
     }
 
-    [HttpGet("{id}/materials")]
-    public async Task<IActionResult> GetMaterials(Guid id)
+    [HttpGet("{id}/materials/{providerId}")]
+    public async Task<IActionResult> GetMaterials(Guid id, Guid providerId)
     {
-        var materials = await _service.GetMaterials(id);
+        var materials = await _service.GetMaterials(id, providerId);
 
         return Ok(materials);
     }
@@ -35,7 +36,15 @@ public class ContractController : BuildingWorksOverviewController<ContractResour
     [HttpPost("{id}/providers")]
     public async Task<IActionResult> AddProviderToContract(Guid id, Guid providerId)
     {
-        await _service.AddProviderToContract(id, providerId);
+        await _service.AddProvider(id, providerId);
+        return Ok();
+    }
+
+    [HttpDelete("{id}/providers")]
+    public async Task<IActionResult> DeleteProvider(Guid id, Guid providerId)
+    {
+        await _service.DeleteProvider(id, providerId);
+
         return Ok();
     }
 }

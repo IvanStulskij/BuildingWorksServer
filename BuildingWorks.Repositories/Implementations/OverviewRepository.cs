@@ -1,6 +1,5 @@
 ﻿using BuildingWorks.Common.Entities;
 using BuildingWorks.Infrastructure;
-using BuildingWorks.Models.Overviews;
 using BuildingWorks.Repositories.Abstractions;
 
 namespace BuildingWorks.Repositories.Implementations;

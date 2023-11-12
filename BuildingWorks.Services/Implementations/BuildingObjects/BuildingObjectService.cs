@@ -21,7 +21,12 @@ public class BuildingObjectService : OverviewService<BuildingObject, BuildingObj
 
     public async Task AddProvider(Guid buildingObjectId, Guid providerId)
     {
-        await  _repository.AddProvider(buildingObjectId, providerId);
+        await _repository.AddProvider(buildingObjectId, providerId);
+    }
+
+    public async Task DeleteProvider(Guid buildingObjectId, Guid providerId)
+    {
+        await _repository.DeleteProvider(buildingObjectId, providerId);
     }
 
     public async Task<IEnumerable<BrigadeOverview>> GetBrigades(Guid buildingObjectId)
@@ -29,6 +34,13 @@ public class BuildingObjectService : OverviewService<BuildingObject, BuildingObj
         var brigades = await _repository.GetBrigades(buildingObjectId);
 
         return Mapper.Map<IEnumerable<BrigadeOverview>>(brigades);
+    }
+
+    public async Task<IEnumerable<ContractOverview>> GetContracts(Guid buildingObjectId)
+    {
+        var contracts = await _repository.GetContracts(buildingObjectId);
+
+        return Mapper.Map<IEnumerable<ContractOverview>>(contracts);
     }
 
     public async Task<IEnumerable<ProviderOverview>> GetProviders(Guid buildingObjectId)
