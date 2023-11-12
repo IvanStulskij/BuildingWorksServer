@@ -9,6 +9,7 @@ public static class ErrorsConstants
 
     public static class Messages
     {
+        public const string ProviderNotExistToBuildingObject = "Невозможно добавить поставщика к договору, который не добавлен к связанному строительному объекту";
         public const string ContractHasConditions = "Невозможно удалить договор, который уже имеет условия";
         public const string ContractIsSigned = "Невозможно обновить договор, который уже подписан";
         public const string BuildingObjectAlreadyHasProvider = "Поставщик уже добавлен к стоительному объекту";
