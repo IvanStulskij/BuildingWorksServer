@@ -21,6 +21,7 @@ public static class ConfigurationExtensions
         ConfigureBuildingObjectProvider(modelBuilder.Entity<BuildingObjectProvider>());
         ConfigureContractMaterial(modelBuilder.Entity<ContractMaterial>());
         ConfigureContractProvider(modelBuilder.Entity<ContractProvider>());
+        ConfigureProviderMaterial(modelBuilder.Entity<MaterialProvider>());
     }
 
     private static void ConfigureProviders(EntityTypeBuilder<Provider> providersBuilder)
@@ -38,6 +39,16 @@ public static class ConfigurationExtensions
             .HasMany(material => material.Contracts)
             .WithMany(contract => contract.Providers)
             .UsingEntity<ContractProvider>();
+
+        providersBuilder
+            .HasMany(provider => provider.Materials)
+            .WithMany(material => material.Providers)
+            .UsingEntity<MaterialProvider>();
+
+        providersBuilder
+            .HasMany(provider => provider.ContractMaterials)
+            .WithOne(material => material.Provider)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 
     private static void ConfigureBuildingObjects(EntityTypeBuilder<BuildingObject> buildingObjectsBuilder)
@@ -54,6 +65,11 @@ public static class ConfigurationExtensions
             .HasMany(material => material.Contracts)
             .WithMany(contract => contract.Materials)
             .UsingEntity<ContractMaterial>();
+
+        materialsBuilder
+            .HasMany(provider => provider.Providers)
+            .WithMany(material => material.Materials)
+            .UsingEntity<MaterialProvider>();
     }
 
     private static void ConfigureBrigades(EntityTypeBuilder<Brigade> brigadesBuilder)
@@ -72,6 +88,8 @@ public static class ConfigurationExtensions
 
     private static void ConfigureWorkers(EntityTypeBuilder<Worker> workersBuilder)
     {
+        workersBuilder.ToTable("Workers");
+
         workersBuilder
             .HasMany(worker => worker.Brigades)
             .WithMany(brigade => brigade.Workers)
@@ -106,8 +124,8 @@ public static class ConfigurationExtensions
     {
         buildingObjectProviderBuilder.HasKey(buildingObjectProvider => new
         {
-            buildingObjectProvider.BuildingObjectId,
-            buildingObjectProvider.ProviderId
+            buildingObjectProvider.BuildingObjectsId,
+            buildingObjectProvider.ProvidersId
         });
     }
 
@@ -116,7 +134,8 @@ public static class ConfigurationExtensions
         contractMaterialBuilder.HasKey(contractMaterial => new
         {
             contractMaterial.ContractsId,
-            contractMaterial.MaterialsId
+            contractMaterial.MaterialsId,
+            contractMaterial.ProviderId
         });
     }
 
@@ -126,6 +145,15 @@ public static class ConfigurationExtensions
         {
             contractProvider.ContractsId,
             contractProvider.ProvidersId
+        });
+    }
+
+    public static void ConfigureProviderMaterial(EntityTypeBuilder<MaterialProvider> providerMaterialBuilder)
+    {
+        providerMaterialBuilder.HasKey(providerMaterial => new
+        {
+            providerMaterial.MaterialsId,
+            providerMaterial.ProvidersId,
         });
     }
 }

@@ -12,7 +12,7 @@ public abstract class OverviewRepository<T> : Repository<T>, IOverviewRepository
     {
     }
 
-    public IQueryable<T> GetOverviewDisplayedData()
+    public virtual IQueryable<T> GetOverviewDisplayedData()
     {
         return IncludeHierarchy();
     }

@@ -1,4 +1,5 @@
 ﻿using BuildingWorks.Common.Entities;
+using BuildingWorks.Infrastructure.Entities.Joininig;
 
 namespace BuildingWorks.Infrastructure.Entities.Providers;
 
@@ -9,6 +10,9 @@ public class Provider : Entity
     public string Signer { get; set; } = string.Empty;
     public string? AdditionalData { get; set; }
 
+    public virtual ICollection<ContractMaterial> ContractMaterials { get; set; } = null!;
+    public virtual ICollection<MaterialProvider> MaterialProviders { get; set; } = null!;
+    public virtual ICollection<Material> Materials { get; set; } = null!;
     public virtual ICollection<BuildingObject> BuildingObjects { get; set; } = null!;
-    public ICollection<Contract> Contracts { get; set; } = null!;
+    public virtual ICollection<Contract> Contracts { get; set; } = null!;
 }

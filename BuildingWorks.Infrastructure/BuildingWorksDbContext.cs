@@ -18,8 +18,9 @@ public class BuildingWorksDbContext : DbContext
     public DbSet<Plan> Plans { get; set; } = null!;
     public DbSet<BrigadeWorker> BrigadeWorker { get; set; } = null!;
     public DbSet<BuildingObjectProvider> BuildingObjectProvider { get; set; } = null!;
-    public DbSet<ContractMaterial> ContractMaterial { get; set; } = null!;
     public DbSet<ContractProvider> ContractProvider { get; set; } = null!;
+    public DbSet<ContractMaterial> ContractMaterial { get; set; } = null!;
+    public DbSet<MaterialProvider> MaterialProvider { get; set; } = null!;
 
     public BuildingWorksDbContext() { }
     public BuildingWorksDbContext(DbContextOptions<BuildingWorksDbContext> options) : base(options) { }

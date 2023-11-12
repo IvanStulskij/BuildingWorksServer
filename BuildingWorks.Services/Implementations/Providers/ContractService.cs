@@ -19,9 +19,24 @@ public class ContractService : OverviewService<Contract, ContractResource, Contr
         _mapper = mapper;
     }
 
-    public async Task<IEnumerable<MaterialOverview>> GetMaterials(Guid id)
+    public override IEnumerable<ContractOverview> GetAllOverview()
     {
-        var materials = await _repository.GetMaterials(id);
+        var dtos = _repository.GetOverviewDisplayedData();
+        var overviews = dtos.Select(dto => new ContractOverview
+        {
+            Id = dto.Id,
+            Conditions = dto.Conditions,
+            SignedOn = dto.SignedOn,
+            MaterialsCount = dto.Materials.Count(),
+            ProvidersCount = dto.Providers.Count()
+        });
+
+        return overviews;
+    }
+
+    public async Task<IEnumerable<MaterialOverview>> GetMaterials(Guid id, Guid providerId)
+    {
+        var materials = await _repository.GetMaterials(id, providerId);
 
         return _mapper.Map<IEnumerable<MaterialOverview>>(materials);
     }
@@ -33,8 +48,13 @@ public class ContractService : OverviewService<Contract, ContractResource, Contr
         return _mapper.Map<IEnumerable<ProviderOverview>>(providers);
     }
 
-    public async Task AddProviderToContract(Guid id, Guid providerId)
+    public async Task AddProvider(Guid id, Guid providerId)
     {
-        await _repository.AddProviderToContract(id, providerId);
+        await _repository.AddProvider(id, providerId);
+    }
+
+    public async Task DeleteProvider(Guid id, Guid providerId)
+    {
+        await _repository.DeleteProvider(id, providerId);
     }
 }

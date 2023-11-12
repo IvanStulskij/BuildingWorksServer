@@ -70,7 +70,7 @@ public abstract class OverviewService<T, TResource, TOverview> : Service<T, TRes
         OverviewRepository = repository;
     }
 
-    public IEnumerable<TOverview> GetAllOverview()
+    public virtual IEnumerable<TOverview> GetAllOverview()
     {
         return Mapper.Map<IEnumerable<TOverview>>(OverviewRepository.GetOverviewDisplayedData());
     }
