@@ -27,7 +27,7 @@ public class ErrorHandlingMiddleware
             throw error switch
             {
                 EntityNotExistException => new ApiProblemDetailsException("Entity with this id not exist in database", StatusCodes.Status404NotFound),
-                EntityAlreadyExistException => new ApiProblemDetailsException("Entity with this key already exist in database", StatusCodes.Status500InternalServerError)
+                EntityAlreadyExistException => new ApiProblemDetailsException("Entity with this key already exist in database", StatusCodes.Status500InternalServerError),
                 ValidationException => HandleValidationException((ValidationException)error),
                 _ => new ApiProblemDetailsException("Something went wrong.", StatusCodes.Status500InternalServerError),
             };

@@ -1,7 +1,6 @@
 using BuildingWorks.Common.Configuration;
 using BuildingWorks.Infrastructure;
 using BuildingWorksServer.Extensions;
-using BuildingWorksServer.Logging;
 using BuildingWorksServer.Middleware;
 using Serilog;
 
@@ -25,7 +24,6 @@ var logger = new LoggerConfiguration()
   .CreateLogger();
 builder.Logging.ClearProviders();
 builder.Logging.AddSerilog(logger);
-builder.Services.AddTransient<HttpClientLoggingHandler>();
 
 var app = builder.Build();
 

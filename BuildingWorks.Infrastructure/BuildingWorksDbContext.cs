@@ -21,6 +21,8 @@ public class BuildingWorksDbContext : DbContext
     public virtual DbSet<ContractProvider> ContractProvider { get; set; } = null!;
     public virtual DbSet<ContractMaterial> ContractMaterial { get; set; } = null!;
     public virtual DbSet<MaterialProvider> MaterialProvider { get; set; } = null!;
+    public virtual DbSet<Order> Orders { get; set; } = null!;
+    public virtual DbSet<OrderMaterial> OrderMaterial { get; set; } = null!;
 
     public BuildingWorksDbContext() { }
     public BuildingWorksDbContext(DbContextOptions<BuildingWorksDbContext> options) : base(options) { }

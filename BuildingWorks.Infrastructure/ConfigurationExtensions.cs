@@ -22,6 +22,7 @@ public static class ConfigurationExtensions
         ConfigureContractMaterial(modelBuilder.Entity<ContractMaterial>());
         ConfigureContractProvider(modelBuilder.Entity<ContractProvider>());
         ConfigureProviderMaterial(modelBuilder.Entity<MaterialProvider>());
+        ConfigureOrders(modelBuilder.Entity<Order>());
     }
 
     private static void ConfigureProviders(EntityTypeBuilder<Provider> providersBuilder)
@@ -70,6 +71,11 @@ public static class ConfigurationExtensions
             .HasMany(provider => provider.Providers)
             .WithMany(material => material.Materials)
             .UsingEntity<MaterialProvider>();
+
+        materialsBuilder
+            .HasMany(order => order.Orders)
+            .WithMany(material => material.Materials)
+            .UsingEntity<OrderMaterial>();
     }
 
     private static void ConfigureBrigades(EntityTypeBuilder<Brigade> brigadesBuilder)
@@ -155,5 +161,21 @@ public static class ConfigurationExtensions
             providerMaterial.MaterialsId,
             providerMaterial.ProvidersId,
         });
+    }
+
+    public static void ConfigureOrders(EntityTypeBuilder<Order> orderBuilder)
+    {
+        orderBuilder
+            .HasOne(order => order.Contract)
+            .WithMany(contract => contract.Orders);
+
+        orderBuilder
+            .HasOne(order => order.Provider)
+            .WithMany(contract => contract.Orders);
+
+        orderBuilder
+            .HasMany(order => order.Materials)
+            .WithMany(material => material.Orders)
+            .UsingEntity<OrderMaterial>();
     }
 }

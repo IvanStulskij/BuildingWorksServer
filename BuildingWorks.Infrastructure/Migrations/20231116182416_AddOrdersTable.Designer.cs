@@ -3,6 +3,7 @@ using System;
 using BuildingWorks.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BuildingWorks.Infrastructure.Migrations
 {
     [DbContext(typeof(BuildingWorksDbContext))]
-    partial class BuildingWorksDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231116182416_AddOrdersTable")]
+    partial class AddOrdersTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -138,32 +141,6 @@ namespace BuildingWorks.Infrastructure.Migrations
                     b.HasIndex("ProvidersId");
 
                     b.ToTable("MaterialProvider");
-                });
-
-            modelBuilder.Entity("BuildingWorks.Infrastructure.Entities.Joininig.OrderMaterial", b =>
-                {
-                    b.Property<Guid>("MaterialId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("OrdersId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("MaterialsId")
-                        .HasColumnType("uuid");
-
-                    b.Property<float>("PricePerOne")
-                        .HasColumnType("real");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("integer");
-
-                    b.HasKey("MaterialId", "OrdersId");
-
-                    b.HasIndex("MaterialsId");
-
-                    b.HasIndex("OrdersId");
-
-                    b.ToTable("OrderMaterial");
                 });
 
             modelBuilder.Entity("BuildingWorks.Infrastructure.Entities.Order", b =>
@@ -501,25 +478,6 @@ namespace BuildingWorks.Infrastructure.Migrations
                     b.Navigation("Provider");
                 });
 
-            modelBuilder.Entity("BuildingWorks.Infrastructure.Entities.Joininig.OrderMaterial", b =>
-                {
-                    b.HasOne("BuildingWorks.Infrastructure.Entities.Providers.Material", "Material")
-                        .WithMany("MaterialOrders")
-                        .HasForeignKey("MaterialsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BuildingWorks.Infrastructure.Entities.Order", "Order")
-                        .WithMany("OrderMaterials")
-                        .HasForeignKey("OrdersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Material");
-
-                    b.Navigation("Order");
-                });
-
             modelBuilder.Entity("BuildingWorks.Infrastructure.Entities.Order", b =>
                 {
                     b.HasOne("BuildingWorks.Infrastructure.Entities.Providers.Contract", "Contract")
@@ -607,11 +565,6 @@ namespace BuildingWorks.Infrastructure.Migrations
                     b.Navigation("Plans");
                 });
 
-            modelBuilder.Entity("BuildingWorks.Infrastructure.Entities.Order", b =>
-                {
-                    b.Navigation("OrderMaterials");
-                });
-
             modelBuilder.Entity("BuildingWorks.Infrastructure.Entities.Providers.Contract", b =>
                 {
                     b.Navigation("Orders");
@@ -621,8 +574,6 @@ namespace BuildingWorks.Infrastructure.Migrations
 
             modelBuilder.Entity("BuildingWorks.Infrastructure.Entities.Providers.Material", b =>
                 {
-                    b.Navigation("MaterialOrders");
-
                     b.Navigation("MaterialProviders");
                 });
 

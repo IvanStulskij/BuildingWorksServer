@@ -15,4 +15,5 @@ public class Provider : Entity
     public virtual ICollection<Material> Materials { get; set; } = null!;
     public virtual ICollection<BuildingObject> BuildingObjects { get; set; } = null!;
     public virtual ICollection<Contract> Contracts { get; set; } = null!;
+    public virtual ICollection<Order> Orders { get; set; } = null!;
 }
