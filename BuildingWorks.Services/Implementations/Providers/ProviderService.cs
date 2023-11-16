@@ -18,6 +18,13 @@ public class ProviderService : OverviewService<Provider, ProviderResource, Provi
         _repository = repository;
     }
 
+    public async Task<IEnumerable<MaterialOverview>> GetMaterials(Guid providerId)
+    {
+        var materials = await _repository.GetMaterials(providerId);
+
+        return Mapper.Map<IEnumerable<MaterialOverview>>(materials);
+    }
+
     public async Task<IEnumerable<DictionaryItem>> GetShortInfos()
     {
         var shortInfos = await _repository.GetShortInfos();

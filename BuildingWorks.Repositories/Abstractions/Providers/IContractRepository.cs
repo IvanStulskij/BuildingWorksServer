@@ -11,6 +11,6 @@ public interface IContractRepository : IOverviewRepository<Contract>
     Task<bool> IsSigned(Guid id);
     Task AddProvider(Guid id, Guid providerId);
     Task DeleteProvider(Guid id, Guid providerId);
-    Task AddMaterial(Guid id, Guid materialId);
+    Task AddMaterial(Guid id, Guid providerId, Guid materialId);
     Task DeleteMaterial(Guid id, Guid materialId);
 }

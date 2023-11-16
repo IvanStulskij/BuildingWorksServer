@@ -9,18 +9,18 @@ namespace BuildingWorks.Infrastructure;
 
 public class BuildingWorksDbContext : DbContext
 {
-    public DbSet<BuildingObject> BuildingObjects { get; set; } = null!;
-    public DbSet<Provider> Providers { get; set; } = null!;
-    public DbSet<Material> Materials { get; set; } = null!;
-    public DbSet<Contract> Contracts { get; set; } = null!;
-    public DbSet<Worker> Workers { get; set; } = null!;
-    public DbSet<WorkerSalary> WorkerSalaries { get; set; } = null!;
-    public DbSet<Plan> Plans { get; set; } = null!;
-    public DbSet<BrigadeWorker> BrigadeWorker { get; set; } = null!;
-    public DbSet<BuildingObjectProvider> BuildingObjectProvider { get; set; } = null!;
-    public DbSet<ContractProvider> ContractProvider { get; set; } = null!;
-    public DbSet<ContractMaterial> ContractMaterial { get; set; } = null!;
-    public DbSet<MaterialProvider> MaterialProvider { get; set; } = null!;
+    public virtual DbSet<BuildingObject> BuildingObjects { get; set; } = null!;
+    public virtual DbSet<Provider> Providers { get; set; } = null!;
+    public virtual DbSet<Material> Materials { get; set; } = null!;
+    public virtual DbSet<Contract> Contracts { get; set; } = null!;
+    public virtual DbSet<Worker> Workers { get; set; } = null!;
+    public virtual DbSet<WorkerSalary> WorkerSalaries { get; set; } = null!;
+    public virtual DbSet<Plan> Plans { get; set; } = null!;
+    public virtual DbSet<BrigadeWorker> BrigadeWorker { get; set; } = null!;
+    public virtual DbSet<BuildingObjectProvider> BuildingObjectProvider { get; set; } = null!;
+    public virtual DbSet<ContractProvider> ContractProvider { get; set; } = null!;
+    public virtual DbSet<ContractMaterial> ContractMaterial { get; set; } = null!;
+    public virtual DbSet<MaterialProvider> MaterialProvider { get; set; } = null!;
 
     public BuildingWorksDbContext() { }
     public BuildingWorksDbContext(DbContextOptions<BuildingWorksDbContext> options) : base(options) { }

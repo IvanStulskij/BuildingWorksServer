@@ -23,4 +23,12 @@ public class ProviderController : BuildingWorksOverviewController<ProviderResour
 
         return Ok(shortInfos);
     }
+
+    [HttpGet("{id}/materials")]
+    public async Task<IActionResult> GetMaterials(Guid materialId)
+    {
+        var materials = await _service.GetMaterials(materialId);
+
+        return Ok(materials);
+    }
 }

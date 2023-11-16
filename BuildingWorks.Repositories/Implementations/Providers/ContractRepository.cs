@@ -143,15 +143,21 @@ public class ContractRepository : OverviewRepository<Contract>, IContractReposit
             throw new ValidationException(ErrorsConstants.Messages.ContractIsSigned);
         }
 
-        await Context.ContractProvider
+        var deletedCount = await Context.ContractProvider
             .Where(entity => entity.ContractsId == id && entity.ProvidersId == providerId)
             .ExecuteDeleteAsync();
+
+        if (deletedCount == 0)
+        {
+            throw new EntityNotExistException($"Material with id {id} doesn't exist in database or not linked to provider with id {providerId}");
+        }
     }
 
-    public async Task AddMaterial(Guid id, Guid materialId)
+    public async Task AddMaterial(Guid id, Guid providerId, Guid materialId)
     {
         var contract = await Set.AsNoTracking()
             .Include(contract => contract.Providers)
+                .ThenInclude(provider => provider.Materials)
             .SingleOrDefaultAsync(contract => contract.Id == id);
 
         if (contract == null)
@@ -166,12 +172,13 @@ public class ContractRepository : OverviewRepository<Contract>, IContractReposit
 
         var providerIds = contract.Providers.Select(provider => provider.Id);
 
-        var entity = new MaterialProvider
+        var entity = new ContractMaterial
         {
             MaterialsId = id,
-            ProvidersId = materialId
+            ProviderId = providerId,
+            ContractsId = providerId,
         };
-        //await Context.MaterialProvider.AddAsync(entity);
+        await Context.ContractMaterial.AddAsync(entity);
         await _databaseChanges.TrySaveChanges(ErrorsConstants.Messages.ContractAlreadyHasProvider);
     }
 

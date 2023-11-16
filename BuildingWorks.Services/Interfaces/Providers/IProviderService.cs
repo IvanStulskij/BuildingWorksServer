@@ -7,4 +7,5 @@ namespace BuildingWorks.Services.Interfaces.Providers;
 public interface IProviderService : IOverviewService<ProviderResource, ProviderOverview>
 {
     Task<IEnumerable<DictionaryItem>> GetShortInfos();
+    Task<IEnumerable<MaterialOverview>> GetMaterials(Guid providerId);
 }

@@ -2,7 +2,6 @@
 using BuildingWorks.Models.Resources.Providers;
 using BuildingWorks.Services.Interfaces.Providers;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics.Contracts;
 
 namespace BuildingWorksServer.Controllers.Providers;
 
@@ -25,7 +24,7 @@ public class ContractController : BuildingWorksOverviewController<ContractResour
         return Ok(providers);
     }
 
-    [HttpGet("{id}/materials/{providerId}")]
+    [HttpGet("{id}/providers/{providerId}/materials")]
     public async Task<IActionResult> GetMaterials(Guid id, Guid providerId)
     {
         var materials = await _service.GetMaterials(id, providerId);
