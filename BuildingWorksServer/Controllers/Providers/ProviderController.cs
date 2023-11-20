@@ -25,9 +25,9 @@ public class ProviderController : BuildingWorksOverviewController<ProviderResour
     }
 
     [HttpGet("{id}/materials")]
-    public async Task<IActionResult> GetMaterials(Guid materialId)
+    public async Task<IActionResult> GetMaterials(Guid id)
     {
-        var materials = await _service.GetMaterials(materialId);
+        var materials = await _service.GetMaterials(id);
 
         return Ok(materials);
     }

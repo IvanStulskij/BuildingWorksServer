@@ -1,6 +1,8 @@
 ﻿using BuildingWorks.Models.Overviews.Providers;
 using BuildingWorks.Models.Resources.Providers;
 using BuildingWorks.Services.Interfaces.Providers;
+using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BuildingWorksServer.Controllers.Providers;
@@ -44,6 +46,31 @@ public class ContractController : BuildingWorksOverviewController<ContractResour
     {
         await _service.DeleteProvider(id, providerId);
 
-        return Ok();
+        return NoContent();
+    }
+
+    [HttpPost("{id}/providers/{providerId}/materials")]
+    public async Task<IActionResult> AddMaterial(Guid id, Guid providerId, OrderMaterialResource material)
+    {
+        var created = await _service.AddMaterial(id, providerId, material);
+
+        return Created(Request.GetDisplayUrl(), created);
+    }
+
+    [HttpPut("{id}/providers/{providerId}/materials/{materialId}")]
+    public async Task<IActionResult> AddMaterial(Guid id, Guid providerId, Guid materialId, OrderMaterialResource material)
+    {
+        material.Id = materialId;
+        var updated = await _service.AddMaterial(id, providerId, material);
+
+        return Ok(updated);
+    }
+
+    [HttpDelete("{id}/providers/{providerId}/materials/{materialId}")]
+    public async Task<IActionResult> DeleteMaterial(Guid id, Guid providerId, Guid materialId)
+    {
+        await _service.DeleteMaterial(id, materialId, providerId);
+
+        return NoContent();
     }
 }
