@@ -8,5 +8,5 @@ public interface IOrdersRepository
 {
     Task Add(OrderResource order);
     Task SetAsDelivered(Guid orderId);
-    Task<IEnumerable<OrderMaterialResource>> GetMaterials(Guid orderId);
+    Task<IEnumerable<OrderMaterialResult>> GetMaterials(Guid orderId);
 }

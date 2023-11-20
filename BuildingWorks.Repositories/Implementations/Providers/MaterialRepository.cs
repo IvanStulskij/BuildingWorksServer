@@ -1,9 +1,12 @@
-﻿using BuildingWorks.Common.Entities;
+﻿using BuildingWorks.Common.Constants;
+using BuildingWorks.Common.Entities;
+using BuildingWorks.Common.Exceptions;
 using BuildingWorks.Infrastructure;
 using BuildingWorks.Infrastructure.Entities.Providers;
-using BuildingWorks.Infrastructure.Migrations;
 using BuildingWorks.Repositories.Abstractions.Providers;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Metadata;
 
 namespace BuildingWorks.Repositories.Implementations.Providers;
 
@@ -22,6 +25,25 @@ public class MaterialRepository : OverviewRepository<Material>, IMaterialReposit
         }).ToListAsync();
 
         return dictionaryItems;
+    }
+
+    public override async Task Delete(Guid id)
+    {
+        var contractsExistForMaterial = await Context.ContractMaterial.AnyAsync(entity => entity.MaterialsId == id);
+
+        if (contractsExistForMaterial)
+        {
+            throw new ValidationException(ErrorsConstants.Messages.MaterialHasContracts);
+        }
+
+        var deletedCount = await Set
+            .Where(material => contractsExistForMaterial && material.Id == id)
+            .ExecuteDeleteAsync();
+
+        if (deletedCount == 0)
+        {
+            throw new EntityNotExistException($"Material with id {id} doesn't exist in database");
+        }
     }
 
     protected override IQueryable<Material> IncludeHierarchy()

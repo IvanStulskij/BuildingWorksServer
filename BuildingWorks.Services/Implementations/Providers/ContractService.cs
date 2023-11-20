@@ -57,4 +57,19 @@ public class ContractService : OverviewService<Contract, ContractResource, Contr
     {
         await _repository.DeleteProvider(id, providerId);
     }
+
+    public async Task<OrderMaterialResult> AddMaterial(Guid id, Guid providerId, OrderMaterialResource material)
+    {
+        return await _repository.AddMaterial(id, providerId, material);
+    }
+
+    public async Task<OrderMaterialResult> UpdateMaterial(Guid id, Guid providerId, OrderMaterialResource material)
+    {
+        return await _repository.UpdateMaterial(id, providerId, material);
+    }
+
+    public async Task DeleteMaterial(Guid id, Guid materialId, Guid providerId)
+    {
+        await _repository.DeleteMaterial(id, materialId, providerId);
+    }
 }

@@ -9,4 +9,7 @@ public interface IContractService : IOverviewService<ContractResource, ContractO
     Task<IEnumerable<MaterialOverview>> GetMaterials(Guid id, Guid providerId);
     Task AddProvider(Guid id, Guid providerId);
     Task DeleteProvider(Guid id, Guid providerId);
+    Task<OrderMaterialResult> AddMaterial(Guid id, Guid providerId, OrderMaterialResource material);
+    Task<OrderMaterialResult> UpdateMaterial(Guid id, Guid providerId, OrderMaterialResource material);
+    Task DeleteMaterial(Guid id, Guid materialId, Guid providerId);
 }

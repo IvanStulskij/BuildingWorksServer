@@ -12,9 +12,6 @@ public class MaterialValidator : AbstractValidator<MaterialResource>
 		RuleFor(material => material.Name.Length)
 			.LessThanOrEqualTo(options.Value.NameMaxLength);
 
-        RuleFor(material => material.PricePerOne)
-            .LessThanOrEqualTo(options.Value.MaxPricePerOne);
-
         RuleFor(material => material.Measure.Length)
             .LessThanOrEqualTo(options.Value.MeasureMaxLength);
     }

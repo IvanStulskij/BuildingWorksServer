@@ -7,7 +7,6 @@ public class Contract : Entity
 {
     public DateTime? SignedOn { get; set; }
     public string Conditions { get; set; } = string.Empty;
-    public float? Sum { get; set; }
 
     public Guid? BuildingObjectId { get; set; }
     public virtual BuildingObject? BuildingObject { get; set; }

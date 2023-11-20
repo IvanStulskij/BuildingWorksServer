@@ -3,6 +3,8 @@ using BuildingWorks.Common.Exceptions;
 using BuildingWorks.Infrastructure;
 using BuildingWorks.Infrastructure.Entities.Joininig;
 using BuildingWorks.Infrastructure.Entities.Providers;
+using BuildingWorks.Models.Overviews.Providers;
+using BuildingWorks.Models.Resources.Providers;
 using BuildingWorks.Repositories.Abstractions.Providers;
 using BuildingWorks.Repositories.Common;
 using BuildingWorks.Repositories.Query;
@@ -76,7 +78,7 @@ public class ContractRepository : OverviewRepository<Contract>, IContractReposit
         await _databaseChanges.TrySaveChanges(ErrorsConstants.Messages.ContractAlreadyHasProvider);
     }
 
-    public async Task<IEnumerable<Material>> GetMaterials(Guid id, Guid providerId)
+    public async Task<IEnumerable<MaterialOverview>> GetMaterials(Guid id, Guid providerId)
     {
         var contract = await Set.AsNoTracking()
             .Include(contract => contract.Providers)
@@ -95,7 +97,15 @@ public class ContractRepository : OverviewRepository<Contract>, IContractReposit
         var materials = await Context.ContractMaterial.AsNoTracking()
             .Include(entity => entity.Material)
             .Where(entity => entity.ProviderId == providerId && entity.ContractsId == id)
-            .Select(entity => entity.Material)
+            .Select(entity => new MaterialOverview
+            {
+                Id = entity.MaterialsId,
+                Measure = entity.Material.Measure,
+                Name = entity.Material.Name,
+                PricePerOne = entity.PricePerOne,
+                Quantity = entity.Quantity,
+                TotalPrice = entity.Quantity * entity.PricePerOne
+            })
             .ToListAsync();
 
         return materials;
@@ -153,7 +163,7 @@ public class ContractRepository : OverviewRepository<Contract>, IContractReposit
         }
     }
 
-    public async Task AddMaterial(Guid id, Guid providerId, Guid materialId)
+    public async Task<OrderMaterialResult> AddMaterial(Guid id, Guid providerId, OrderMaterialResource resource)
     {
         var contract = await Set.AsNoTracking()
             .Include(contract => contract.Providers)
@@ -174,16 +184,59 @@ public class ContractRepository : OverviewRepository<Contract>, IContractReposit
 
         var entity = new ContractMaterial
         {
-            MaterialsId = id,
+            MaterialsId = resource.Id,
             ProviderId = providerId,
-            ContractsId = providerId,
+            ContractsId = id,
+            PricePerOne = resource.PricePerOne,
+            Quantity = resource.Quantity,
         };
         await Context.ContractMaterial.AddAsync(entity);
         await _databaseChanges.TrySaveChanges(ErrorsConstants.Messages.ContractAlreadyHasProvider);
+
+        return new OrderMaterialResult
+        {
+            Id = id,
+            Quantity = entity.Quantity,
+            PricePerOne = entity.PricePerOne
+        };
     }
 
-    public Task DeleteMaterial(Guid id, Guid materialId)
+    public async Task DeleteMaterial(Guid id, Guid materialId, Guid providerId)
     {
-        throw new NotImplementedException();
+        var deletedCount = await Context.ContractMaterial
+            .Include(entity => entity.Contract)
+            .Where(entity => entity.ContractsId == id && entity.ProviderId == providerId && entity.MaterialsId == materialId && entity.Contract.SignedOn == null)
+            .ExecuteDeleteAsync();
+
+        if (deletedCount == 0)
+        {
+            throw new EntityNotExistException($"Material with id {materialId} doesn't exist in database or not linked to provider with id {providerId} or contract with id {id}");
+        }
+    }
+
+    public async Task<OrderMaterialResult> UpdateMaterial(Guid id, Guid providerId, OrderMaterialResource material)
+    {
+        var contractMaterial = await Context.ContractMaterial
+            .Include(entity => entity.Material)
+            .SingleOrDefaultAsync(entity => entity.MaterialsId == material.Id && entity.ProviderId == providerId && entity.ContractsId == id);
+
+        if (contractMaterial == null)
+        {
+            throw new EntityNotExistException($"Pair of material with id {material.Id}, contract with id {id}, provider with id {providerId} not exist in database");
+        }
+
+        contractMaterial.Quantity = material.Quantity;
+        contractMaterial.PricePerOne = material.PricePerOne;
+
+        await Context.SaveChangesAsync();
+
+        return new OrderMaterialResult
+        {
+            Id = material.Id,
+            Name = contractMaterial.Material.Name,
+            Measure = contractMaterial.Material.Measure,
+            Quantity = material.Quantity,
+            PricePerOne = material.PricePerOne,
+        };
     }
 }
