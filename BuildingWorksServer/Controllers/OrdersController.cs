@@ -23,6 +23,13 @@ public class OrdersController : ControllerBase
 		return Ok();
 	}
 
+	[HttpPost("{id}/send-link")]
+	public async Task<IActionResult> SendLink(Guid id)
+	{
+		await _repository.SendOrderLink(id);
+		return Ok();
+	}
+
 	[HttpGet("{id}/materials")]
 	public async Task<IActionResult> GetMaterials(Guid id)
 	{
@@ -37,5 +44,13 @@ public class OrdersController : ControllerBase
 		await _repository.SetAsDelivered(id);
 
 		return Ok();
+	}
+
+	[HttpPatch("{id}/approved-by-provider")]
+	public async Task<IActionResult> UpdateProviderApprovedStatus(Guid id)
+	{
+		var approvedByProvider = await _repository.ApproveByProvider(id);
+
+		return Ok(approvedByProvider);
 	}
 }

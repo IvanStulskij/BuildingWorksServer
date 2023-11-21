@@ -1,8 +1,10 @@
-﻿using BuildingWorks.Repositories.Abstractions.BuildingObjects;
+﻿using BuildingWorks.Repositories.Abstractions;
+using BuildingWorks.Repositories.Abstractions.BuildingObjects;
 using BuildingWorks.Repositories.Abstractions.Plans;
 using BuildingWorks.Repositories.Abstractions.Providers;
 using BuildingWorks.Repositories.Abstractions.Workers;
 using BuildingWorks.Repositories.Common;
+using BuildingWorks.Repositories.Implementations;
 using BuildingWorks.Repositories.Implementations.BuildingObjects;
 using BuildingWorks.Repositories.Implementations.Plans;
 using BuildingWorks.Repositories.Implementations.Providers;
@@ -24,5 +26,7 @@ public static class DependencyInjection
         services.AddScoped<IWorkerRepository, WorkerRepository>();
         services.AddScoped<IWorkerSalaryRepository, WorkerSalaryRepository>();
         services.AddScoped<IDatabaseChanges, DatabaseChanges>();
+        services.AddScoped<IOrdersRepository, OrdersRepository>();
+        services.AddScoped<ISmsNotificationSender, ExternalSmsNoficationSender>();
     }
 }

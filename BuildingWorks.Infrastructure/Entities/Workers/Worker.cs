@@ -15,7 +15,6 @@ public class Worker : Entity
     public virtual Brigade? BrigadierBrigade { get; set; }
 
     public virtual ICollection<Brigade> Brigades { get; set; } = null!;
-    public virtual ICollection<Order> Orders { get; set; } = null!;
     public virtual ICollection<WorkerSalary> WorkerSalaries { get; set; } = null!;
     public virtual ICollection<BrigadeWorker> BrigadeWorkers { get; set; } = null!;
 }

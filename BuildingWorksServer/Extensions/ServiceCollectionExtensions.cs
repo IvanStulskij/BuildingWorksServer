@@ -28,6 +28,7 @@ public static class ServiceCollectionExtensions
     public static void ConfigureServices(this IServiceCollection services)
     {
         services.AddMapper();
+        services.AddSignalR();
         services.AddRepositories();  
         services.AddServices();
         services.AddValidators();

@@ -1,4 +1,5 @@
 ﻿using AutoWrapper;
+using BuildingWorksServer.Hubs;
 
 namespace BuildingWorksServer.Extensions;
 
@@ -12,5 +13,10 @@ public static class WebApplicationExtensions
             UseApiProblemDetailsException = true,
             IgnoreWrapForOkRequests = true,
         });
+    }
+
+    public static void ConfigureHubs(this WebApplication webApplication)
+    {
+        webApplication.MapHub<ProviderSubmitStatusHub>("/orders/submit-status");
     }
 }

@@ -6,7 +6,7 @@ using BuildingWorks.Infrastructure.Entities.Joininig;
 using BuildingWorks.Models.Resources;
 using BuildingWorks.Models.Resources.Providers;
 using BuildingWorks.Repositories.Abstractions;
-using BuildingWorks.Repositories.Abstractions.Providers;
+using BuildingWorks.Repositories.Common;
 using Microsoft.EntityFrameworkCore;
 
 namespace BuildingWorks.Repositories.Implementations;
@@ -14,12 +14,14 @@ namespace BuildingWorks.Repositories.Implementations;
 public class OrdersRepository : IOrdersRepository
 {
     private readonly IMapper _mapper;
+    private readonly ISmsNotificationSender _smsNotificationSender;
     private readonly BuildingWorksDbContext _context;
 
-    public OrdersRepository(IMapper mapper, BuildingWorksDbContext context)
+    public OrdersRepository(IMapper mapper, BuildingWorksDbContext context, ISmsNotificationSender smsNotificationSender)
     {
         _mapper = mapper;
         _context = context;
+        _smsNotificationSender = smsNotificationSender;
     }
 
     public async Task Add(OrderResource entity)
@@ -77,11 +79,37 @@ public class OrdersRepository : IOrdersRepository
     {
         var updatedCount = await _context.Orders
             .Where(order => order.Id == orderId)
-            .ExecuteUpdateAsync(ctx => ctx.SetProperty(order => order.DeliveredAt, DateTime.UtcNow));
+            .ExecuteUpdateAsync(ctx => ctx
+                                        .SetProperty(order => order.DeliveredAt, DateTime.UtcNow)
+                                        .SetProperty(order => order.StatusId, (int)OrderStatuses.Delivered)
+                                        .SetProperty(order => order.Status, Constants.OrderStatusesWithNames[OrderStatuses.Delivered]));
 
         if (updatedCount == 0)
         {
             throw new EntityNotExistException($"Order with id {orderId} not exist in database");
         }
+    }
+
+    public async Task SendOrderLink(Guid orderId)
+    {
+        /*var order = await _context.Orders.SingleOrDefaultAsync(order => order.Id == orderId);
+
+        if (order == null)
+        {
+            throw new EntityNotExistException($"Order with id {orderId} not exist in database");
+        }*/
+
+        await _smsNotificationSender.SendSms("message", "+995599167435");
+    }
+
+    public async Task<bool> ApproveByProvider(Guid id)
+    {
+        var updatedCount = await _context.Orders
+            .Where(provider => provider.Id == id)
+            .ExecuteUpdateAsync(context => context
+                                                .SetProperty(order => order.StatusId, (int)OrderStatuses.ApprovedByProvider)
+                                                .SetProperty(order => order.Status, Constants.OrderStatusesWithNames[OrderStatuses.ApprovedByProvider]));
+
+        return updatedCount > 0;
     }
 }
