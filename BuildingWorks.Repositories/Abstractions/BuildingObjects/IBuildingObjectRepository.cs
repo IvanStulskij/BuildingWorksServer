@@ -11,4 +11,5 @@ public interface IBuildingObjectRepository : IOverviewRepository<BuildingObject>
     Task<IEnumerable<Provider>> GetProviders(Guid buildingObjectId);
     Task AddProvider(Guid id, Guid providerId);
     Task DeleteProvider(Guid id, Guid providerId);
+    Task<IEnumerable<Order>> GetOrders(Guid buildingObjectId);
 }

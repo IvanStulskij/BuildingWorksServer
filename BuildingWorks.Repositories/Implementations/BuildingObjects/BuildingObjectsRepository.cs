@@ -75,6 +75,13 @@ public class BuildingObjectsRepository : OverviewRepository<BuildingObject>, IBu
         return buildingObject.Brigades;
     }
 
+    public async Task<IEnumerable<Order>> GetOrders(Guid buildingObjectId)
+    {
+        var orders = await Context.Orders.AsNoTracking().Where(order => order.BuildingObjectId == buildingObjectId).ToListAsync();
+
+        return orders;
+    }
+
     public async Task<IEnumerable<Provider>> GetProviders(Guid buildingObjectId)
     {
         var providers = await Context.BuildingObjectProvider.AsNoTracking()
