@@ -12,7 +12,7 @@ public abstract class BuildingWorksController<TResource, TService> : ControllerB
 {
     private readonly TService _service;
 
-    public BuildingWorksController(TService service)
+    protected BuildingWorksController(TService service)
     {
         _service = service;
     }

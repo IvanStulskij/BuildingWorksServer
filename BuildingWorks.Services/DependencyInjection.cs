@@ -16,7 +16,6 @@ public static class DependencyInjection
     {
         services.AddScoped<IBuildingObjectService, BuildingObjectService>();
         services.AddScoped<IPlanService, PlanService>();
-        services.AddScoped<IContractService, ContractService>();
         services.AddScoped<IMaterialService, MaterialService>();
         services.AddScoped<IProviderService, ProviderService>();
         services.AddScoped<IBrigadeService, BrigadeService>();

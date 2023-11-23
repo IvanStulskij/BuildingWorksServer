@@ -9,7 +9,6 @@ public interface IBuildingObjectService : IOverviewService<BuildingObjectResourc
 {
     Task<IEnumerable<ProviderOverview>> GetProviders(Guid buildingObjectId);
     Task<IEnumerable<BrigadeOverview>> GetBrigades(Guid buildingObjectId);
-    Task<IEnumerable<ContractOverview>> GetContracts(Guid buildingObjectId);
     Task AddProvider(Guid buildingObjectId, Guid providerId);
     Task DeleteProvider(Guid buildingObjectId, Guid providerId);
 }

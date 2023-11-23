@@ -19,8 +19,6 @@ public static class ConfigurationExtensions
         ConfigureWorkerSalaries(modelBuilder.Entity<WorkerSalary>());
         ConfigureBrigadeWorker(modelBuilder.Entity<BrigadeWorker>());
         ConfigureBuildingObjectProvider(modelBuilder.Entity<BuildingObjectProvider>());
-        ConfigureContractMaterial(modelBuilder.Entity<ContractMaterial>());
-        ConfigureContractProvider(modelBuilder.Entity<ContractProvider>());
         ConfigureProviderMaterial(modelBuilder.Entity<MaterialProvider>());
         ConfigureOrders(modelBuilder.Entity<Order>());
     }
@@ -28,28 +26,14 @@ public static class ConfigurationExtensions
     private static void ConfigureProviders(EntityTypeBuilder<Provider> providersBuilder)
     {
         providersBuilder
-            .HasMany(provider => provider.Contracts)
-            .WithMany(contract => contract.Providers);
-
-        providersBuilder
             .HasMany(provider => provider.BuildingObjects)
             .WithMany(buildingObject => buildingObject.Providers)
             .UsingEntity<BuildingObjectProvider>();
 
         providersBuilder
-            .HasMany(material => material.Contracts)
-            .WithMany(contract => contract.Providers)
-            .UsingEntity<ContractProvider>();
-
-        providersBuilder
             .HasMany(provider => provider.Materials)
             .WithMany(material => material.Providers)
             .UsingEntity<MaterialProvider>();
-
-        providersBuilder
-            .HasMany(provider => provider.ContractMaterials)
-            .WithOne(material => material.Provider)
-            .OnDelete(DeleteBehavior.Restrict);
     }
 
     private static void ConfigureBuildingObjects(EntityTypeBuilder<BuildingObject> buildingObjectsBuilder)
@@ -62,11 +46,6 @@ public static class ConfigurationExtensions
 
     private static void ConfigureMaterials(EntityTypeBuilder<Material> materialsBuilder)
     {
-        materialsBuilder
-            .HasMany(material => material.Contracts)
-            .WithMany(contract => contract.Materials)
-            .UsingEntity<ContractMaterial>();
-
         materialsBuilder
             .HasMany(provider => provider.Providers)
             .WithMany(material => material.Materials)
@@ -135,24 +114,6 @@ public static class ConfigurationExtensions
         });
     }
 
-    public static void ConfigureContractMaterial(EntityTypeBuilder<ContractMaterial> contractMaterialBuilder)
-    {
-        contractMaterialBuilder.HasKey(contractMaterial => new
-        {
-            contractMaterial.ContractsId,
-            contractMaterial.MaterialsId,
-            contractMaterial.ProviderId
-        });
-    }
-
-    public static void ConfigureContractProvider(EntityTypeBuilder<ContractProvider> contractProviderBuilder)
-    {
-        contractProviderBuilder.HasKey(contractProvider => new
-        {
-            contractProvider.ContractsId,
-            contractProvider.ProvidersId
-        });
-    }
 
     public static void ConfigureProviderMaterial(EntityTypeBuilder<MaterialProvider> providerMaterialBuilder)
     {
@@ -166,7 +127,11 @@ public static class ConfigurationExtensions
     public static void ConfigureOrders(EntityTypeBuilder<Order> orderBuilder)
     {
         orderBuilder
-            .HasOne(order => order.Contract)
+            .HasOne(order => order.BuildingObject)
+            .WithMany(contract => contract.Orders);
+
+        orderBuilder
+            .HasOne(order => order.BuildingObject)
             .WithMany(contract => contract.Orders);
 
         orderBuilder

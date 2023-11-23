@@ -16,7 +16,7 @@ public static class DependencyInjection
     private readonly static Type[] MappedTypes = new Type[]
     {
         typeof(BuildingObjectProfile), typeof(PlanProfile), typeof(ProviderProfile),
-        typeof(MaterialProfile), typeof(ContractProfile), typeof(BrigadeProfile),
+        typeof(MaterialProfile), typeof(BrigadeProfile),
         typeof(WorkerProfile), typeof(WorkerSalaryProfile),
     };
 }

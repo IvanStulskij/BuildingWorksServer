@@ -27,25 +27,6 @@ public class MaterialRepository : OverviewRepository<Material>, IMaterialReposit
         return dictionaryItems;
     }
 
-    public override async Task Delete(Guid id)
-    {
-        var contractsExistForMaterial = await Context.ContractMaterial.AnyAsync(entity => entity.MaterialsId == id);
-
-        if (contractsExistForMaterial)
-        {
-            throw new ValidationException(ErrorsConstants.Messages.MaterialHasContracts);
-        }
-
-        var deletedCount = await Set
-            .Where(material => contractsExistForMaterial && material.Id == id)
-            .ExecuteDeleteAsync();
-
-        if (deletedCount == 0)
-        {
-            throw new EntityNotExistException($"Material with id {id} doesn't exist in database");
-        }
-    }
-
     protected override IQueryable<Material> IncludeHierarchy()
     {
         return Set;

@@ -24,14 +24,6 @@ public class BuildingObjectController : BuildingWorksOverviewController<Building
         return Ok(providers);
     }
 
-    [HttpGet("{id}/contracts")]
-    public async Task<IActionResult> GetContracts(Guid id)
-    {
-        var contracts = await _service.GetContracts(id);
-
-        return Ok(contracts);
-    }
-
     [HttpGet("{id}/brigades")]
     public async Task<IActionResult> GetBrigades(Guid id)
     {

@@ -75,20 +75,6 @@ public class BuildingObjectsRepository : OverviewRepository<BuildingObject>, IBu
         return buildingObject.Brigades;
     }
 
-    public async Task<IEnumerable<Contract>> GetContracts(Guid buildingObjectId)
-    {
-        var buildingObject = await Set.AsNoTracking()
-            .Include(buildingObject => buildingObject.Contracts)
-            .FirstOrDefaultAsync(buildingObject => buildingObject.Id == buildingObjectId);
-
-        if (buildingObject == null)
-        {
-            throw new EntityNotExistException($"Building object with id {buildingObjectId} doesn't exist in database");
-        }
-
-        return buildingObject.Contracts;
-    }
-
     public async Task<IEnumerable<Provider>> GetProviders(Guid buildingObjectId)
     {
         var providers = await Context.BuildingObjectProvider.AsNoTracking()

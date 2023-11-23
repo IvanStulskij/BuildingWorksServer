@@ -16,8 +16,8 @@ public class Order : Entity
 
     public Guid ProviderId { get; set; }
     public virtual Provider Provider { get; set; }
-    public Guid ContractId { get; set; }
-    public virtual Contract Contract { get; set; }
+    public Guid? BuildingObjectId { get; set; }
+    public virtual BuildingObject? BuildingObject { get; set; }
 
     public ICollection<Material> Materials { get; set; }
     public ICollection<OrderMaterial> OrderMaterials { get; set; }

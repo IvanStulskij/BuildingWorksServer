@@ -9,7 +9,6 @@ public interface IBuildingObjectRepository : IOverviewRepository<BuildingObject>
     Task<float> CalculateTotalCost(Guid buildingObjectId);
     Task<IEnumerable<Brigade>> GetBrigades(Guid buildingObjectId);
     Task<IEnumerable<Provider>> GetProviders(Guid buildingObjectId);
-    Task<IEnumerable<Contract>> GetContracts(Guid buildingObjectId);
     Task AddProvider(Guid id, Guid providerId);
     Task DeleteProvider(Guid id, Guid providerId);
 }

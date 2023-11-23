@@ -19,7 +19,6 @@ public static class DependencyInjection
     {
         services.AddScoped<IBuildingObjectRepository, BuildingObjectsRepository>();
         services.AddScoped<IPlanRepository, PlanRepository>();
-        services.AddScoped<IContractRepository, ContractRepository>();
         services.AddScoped<IMaterialRepository, MaterialRepository>();
         services.AddScoped<IProviderRepository, ProviderRepository>();
         services.AddScoped<IBrigadeRepository, BrigadeRepository>();

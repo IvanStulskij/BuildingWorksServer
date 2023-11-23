@@ -36,19 +36,10 @@ public class BuildingObjectService : OverviewService<BuildingObject, BuildingObj
         return Mapper.Map<IEnumerable<BrigadeOverview>>(brigades);
     }
 
-    public async Task<IEnumerable<ContractOverview>> GetContracts(Guid buildingObjectId)
-    {
-        var contracts = await _repository.GetContracts(buildingObjectId);
-
-        return Mapper.Map<IEnumerable<ContractOverview>>(contracts);
-    }
-
     public async Task<IEnumerable<ProviderOverview>> GetProviders(Guid buildingObjectId)
     {
         var providers = await _repository.GetProviders(buildingObjectId);
 
         return Mapper.Map<IEnumerable<ProviderOverview>>(providers);
     }
-
-
 }
