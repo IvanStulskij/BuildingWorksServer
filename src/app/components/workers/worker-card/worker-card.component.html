@@ -1,0 +1,49 @@
+<div class="form-container">
+    <form [formGroup]="workerForm!">
+        <mat-form-field class="form-field" appearance="outline">
+            <mat-label>First Name</mat-label>
+            <input matInput formControlName="firstName" required>
+            <mat-error *ngIf="workerForm!.controls['firstName'].touched && workerForm!.controls['firstName'].invalid">
+              <span *ngIf="workerForm!.controls['firstName'].errors">This field is mandatory.</span>
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field class="form-field" appearance="outline">
+            <mat-label>Last Name</mat-label>
+            <input matInput formControlName="lastName" required>
+            <mat-error *ngIf="workerForm!.controls['lastName'].touched && workerForm!.controls['lastName'].invalid">
+              <span *ngIf="workerForm!.controls['lastName'].errors">This field is mandatory.</span>
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field class="form-field" appearance="outline">
+            <mat-label> Middle Name</mat-label>
+            <input matInput *ngIf="workerForm" formControlName="middleName" required>
+            <mat-error *ngIf="workerForm!.controls['middleName'].touched && workerForm!.controls['middleName'].invalid">
+              <span *ngIf="workerForm!.controls['middleName'].errors">This field is mandatory.</span>
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field class="form-field" appearance="outline">
+            <mat-label> Start working date</mat-label>
+            <input matInput type="date" formControlName="startWorkDate" required>
+            <mat-error *ngIf="workerForm!.controls['startWorkDate'].touched && workerForm!.controls['startWorkDate'].invalid">
+              <span *ngIf="workerForm!.controls['startWorkDate'].errors">This field is mandatory.</span>
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field class="form-field" appearance="outline">
+            <mat-label> Brigadier</mat-label>
+            <mat-checkbox formControlName="brigadierBrigadeId"></mat-checkbox>
+            <input matInput formControlName="brigadierBrigadeId" required>
+            <mat-error *ngIf="workerForm!.controls['brigadierBrigadeId'].touched && workerForm!.controls['brigadierBrigadeId'].invalid">
+              <span *ngIf="workerForm!.controls['brigadierBrigadeId'].errors">This field is mandatory.</span>
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field class="form-field" appearance="outline">
+            <mat-label> Brigade</mat-label>
+            <input matInput formControlName="brigadeId" required>
+            <mat-error *ngIf="workerForm!.controls['brigadeId'].touched && workerForm!.controls['brigadeId'].invalid">
+              <span *ngIf="workerForm!.controls['brigadeId'].errors">This field is mandatory.</span>
+            </mat-error>
+        </mat-form-field>
+    </form>
+    <button (click)="saveWorker()">{{submitButtonText}}</button>
+    <button (click)="closeWindow()">Close</button>
+</div>

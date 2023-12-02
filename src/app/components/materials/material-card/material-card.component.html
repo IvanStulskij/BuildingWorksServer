@@ -1,0 +1,20 @@
+<div class="form-container">
+    <form [formGroup]="materialForm!">
+        <mat-form-field class="form-field" appearance="outline">
+            <mat-label>Name</mat-label>
+            <input matInput formControlName="name" required>
+            <mat-error *ngIf="materialForm!.controls['name'].touched && materialForm!.controls['name'].invalid">
+              <span *ngIf="materialForm!.controls['name'].errors">This field is mandatory.</span>
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field class="form-field" appearance="outline">
+            <mat-label> Measure</mat-label>
+            <input matInput *ngIf="materialForm" formControlName="measure" required>
+            <mat-error *ngIf="materialForm!.controls['measure'].touched && materialForm!.controls['measure'].invalid">
+              <span *ngIf="materialForm!.controls['measure'].errors">This field is mandatory.</span>
+            </mat-error>
+        </mat-form-field>
+    </form>
+    <button (click)="saveMaterial()">{{submitButtonText}}</button>
+    <button (click)="closeWindow()">Close</button>
+</div>

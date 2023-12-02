@@ -1,0 +1,10 @@
+<nav mat-tab-nav-bar [tabPanel]="tabPanel">
+    <a mat-tab-link routerLink="/buildingObjects"> Building Objects </a>
+    <a mat-tab-link routerLink="/materials"> Materials </a>
+    <a mat-tab-link routerLink="/providers"> Providers </a>
+    <a mat-tab-link routerLink="/workers"> Workers </a>
+    <a mat-tab-link routerLink="/contracts"> Contracts </a>
+  </nav>
+  <mat-tab-nav-panel #tabPanel>
+    <router-outlet></router-outlet>
+  </mat-tab-nav-panel>

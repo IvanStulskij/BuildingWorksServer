@@ -1,0 +1,97 @@
+<div class="form-container">
+    <form [formGroup]="orderForm!">
+        <mat-form-field class="form-field" appearance="outline">
+            <mat-label>Order id</mat-label>
+            <input matInput formControlName="orderId" required>
+            <mat-error *ngIf="orderForm!.controls['orderId'].touched && orderForm!.controls['orderId'].invalid">
+              <span *ngIf="orderForm!.controls['orderId'].errors">This field is mandatory.</span>
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="form-field" appearance="outline">
+          <mat-label>Provider</mat-label>
+            <mat-select [(value)]="selectedProvider" placeholder="Type" (valueChange)="selectOrderMaterials()">
+              <mat-option *ngFor="let providerShortInfo of providersShortInfos$ | async"  [value]="providerShortInfo">{{providerShortInfo.name}}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="orderForm!.controls['providerId'].touched && orderForm!.controls['providerId'].invalid">
+              <span *ngIf="orderForm!.controls['providerId'].errors">This field is mandatory.</span>
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field *ngIf="this.data.id" class="form-field" appearance="outline">
+            <mat-label>Start deliver at</mat-label>
+            <input matInput *ngIf="orderForm" formControlName="startDeliverAt" required>
+            <mat-error *ngIf="orderForm!.controls['startDeliverAt'].touched && orderForm!.controls['startDeliverAt'].invalid">
+              <span *ngIf="orderForm!.controls['startDeliverAt'].errors">This field is mandatory.</span>
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field *ngIf="this.data.id" class="form-field" appearance="outline">
+            <mat-label>Delivered at</mat-label>
+            <input matInput *ngIf="orderForm" formControlName="factDeliveredAt" required>
+            <mat-error *ngIf="orderForm!.controls['factDeliveredAt'].touched && orderForm!.controls['factDeliveredAt'].invalid">
+              <span *ngIf="orderForm!.controls['factDeliveredAt'].errors">This field is mandatory.</span>
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="form-field" appearance="outline">
+          <mat-label>Planned deliver at</mat-label>
+          <input matInput *ngIf="orderForm" formControlName="plannedDeliveredAt" required>
+          <mat-error *ngIf="orderForm!.controls['plannedDeliveredAt'].touched && orderForm!.controls['plannedDeliveredAt'].invalid">
+            <span *ngIf="orderForm!.controls['plannedDeliveredAt'].errors">This field is mandatory.</span>
+          </mat-error>
+        </mat-form-field>
+        
+        <mat-form-field *ngIf="this.data.id" class="form-field" appearance="outline">
+            <mat-label>Provider name</mat-label>
+            <input matInput formControlName="providerName" required>
+            <mat-error *ngIf="orderForm!.controls['providerName'].touched && orderForm!.controls['providerName'].invalid">
+              <span *ngIf="orderForm!.controls['providerName'].errors">This field is mandatory.</span>
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field *ngIf="this.selectedProvider" class="form-field" appearance="outline">
+          <mat-label>Materials</mat-label>
+          <input matInput>
+          <button mat-button value="Select material" (click)="openOrderMaterialsComponent()">Add material</button>
+          <table mat-table [dataSource]="materialsTableDataSource" class="mat-elevation-z8" formControlName="materials">
+
+            <!-- Position Column -->
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef> Name </th>
+              <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+            </ng-container>
+          
+            <!-- Name Column -->
+            <ng-container matColumnDef="measure">
+              <th mat-header-cell *matHeaderCellDef> Measure </th>
+              <td mat-cell *matCellDef="let element"> {{element.measure}} </td>
+            </ng-container>
+          
+            <!-- Weight Column -->
+            <ng-container matColumnDef="quantity">
+              <th mat-header-cell *matHeaderCellDef> Quantity </th>
+              <td mat-cell *matCellDef="let element"> {{element.quantity}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="pricePerOne">
+              <th mat-header-cell *matHeaderCellDef> Price per one </th>
+              <td mat-cell *matCellDef="let element">{{element.pricePerOne}} </td>
+            </ng-container>
+            
+            <ng-container matColumnDef="totalPrice">
+              <th mat-header-cell *matHeaderCellDef> Total price </th>
+              <td mat-cell *matCellDef="let element">{{element.pricePerOne * element.quantity}} </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedMaterialColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedMaterialColumns;"></tr>
+          </table>
+          <mat-error *ngIf="orderForm!.controls['materials'].touched && orderForm!.controls['materials'].invalid">
+            <span *ngIf="orderForm!.controls['materials'].errors">This field is mandatory.</span>
+          </mat-error>
+      </mat-form-field>
+    </form>
+    <button *ngIf="!this.data.id" (click)="saveOrder()">Create</button>
+    <button (click)="closeWindow()">Close</button>
+</div>

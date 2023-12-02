@@ -1,0 +1,23 @@
+<table mat-table [dataSource]="(workers$ | async) ?? []" class="mat-elevation-z8">
+
+  <!-- Position Column -->
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef> Name </th>
+    <td mat-cell *matCellDef="let element"> {{element.firstName}} {{element.lastName}} {{element.middleName}}</td>
+  </ng-container>
+
+  <!-- Name Column -->
+  <ng-container matColumnDef="startWorkDate">
+    <th mat-header-cell *matHeaderCellDef> Start work date </th>
+    <td mat-cell *matCellDef="let element"> {{element.country}} </td>
+  </ng-container>
+
+  <!-- Weight Column -->
+  <ng-container matColumnDef="post">
+    <th mat-header-cell *matHeaderCellDef> Post </th>
+    <td mat-cell *matCellDef="let element"> {{element.signer}} </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>

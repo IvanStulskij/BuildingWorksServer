@@ -1,0 +1,34 @@
+<div class="form-container">
+    <form [formGroup]="providerForm!">
+        <mat-form-field class="form-field" appearance="outline">
+            <mat-label>Name</mat-label>
+            <input matInput formControlName="name" required>
+            <mat-error *ngIf="providerForm!.controls['name'].touched && providerForm!.controls['name'].invalid">
+              <span *ngIf="providerForm!.controls['name'].errors">This field is mandatory.</span>
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field class="form-field" appearance="outline">
+            <mat-label>Country</mat-label>
+            <input matInput formControlName="country" required>
+            <mat-error *ngIf="providerForm!.controls['country'].touched && providerForm!.controls['country'].invalid">
+              <span *ngIf="providerForm!.controls['country'].errors">This field is mandatory.</span>
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field class="form-field" appearance="outline">
+            <mat-label> Signer</mat-label>
+            <input matInput *ngIf="providerForm" formControlName="signer" required>
+            <mat-error *ngIf="providerForm!.controls['signer'].touched && providerForm!.controls['signer'].invalid">
+              <span *ngIf="providerForm!.controls['signer'].errors">This field is mandatory.</span>
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field class="form-field" appearance="outline">
+            <mat-label>additional data</mat-label>
+            <input matInput *ngIf="providerForm" formControlName="additionalData" required>
+            <mat-error *ngIf="providerForm!.controls['additionalData'].touched && providerForm!.controls['additionalData'].invalid">
+              <span *ngIf="providerForm!.controls['additionalData'].errors">This field is mandatory.</span>
+            </mat-error>
+        </mat-form-field>
+    </form>
+    <button (click)="saveProvider()">{{submitButtonText}}</button>
+    <button (click)="closeWindow()">Close</button>
+</div>

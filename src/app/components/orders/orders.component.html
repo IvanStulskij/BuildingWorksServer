@@ -1,0 +1,39 @@
+<button mat-button (click)="navigateToCreateWindow()">Create</button>
+
+<table mat-table [dataSource]="(orders$ | async) ?? []" class="mat-elevation-z8">
+
+  <!-- Position Column -->
+  <ng-container matColumnDef="orderId">
+    <th mat-header-cell *matHeaderCellDef> Order id </th>
+    <td mat-cell *matCellDef="let element"> {{element.orderId}} </td>
+  </ng-container>
+
+  <!-- Name Column -->
+  <ng-container matColumnDef="deliveredAt">
+    <th mat-header-cell *matHeaderCellDef> Delivered at </th>
+    <td mat-cell *matCellDef="let element"> {{element.deliveredAt}} </td>
+  </ng-container>
+
+  <!-- Weight Column -->
+  <ng-container matColumnDef="startDeliverAt">
+    <th mat-header-cell *matHeaderCellDef> Start deliver at </th>
+    <td mat-cell *matCellDef="let element"> {{element.startDeliverAt}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="providerName">
+    <th mat-header-cell *matHeaderCellDef> Provider name </th>
+    <td mat-cell *matCellDef="let element"> {{element.providerName}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="selectMaterials">
+    <th mat-header-cell *matHeaderCellDef> Materials </th>
+    <td mat-cell *matCellDef="let element">
+      <button mat-button routerLink="{{element.id}}/materials">Open</button>
+      <button mat-button routerLink="{{element.id}}/materials/add">Add</button>
+    </td>
+  </ng-container>
+  
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+<notifier-container></notifier-container>

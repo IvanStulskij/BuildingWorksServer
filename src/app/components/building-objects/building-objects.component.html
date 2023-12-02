@@ -1,0 +1,49 @@
+<button mat-button (click)="navigateToCreateWindow()">Create</button>
+
+<table mat-table [dataSource]="(buildingObjects$ | async) ?? []" class="mat-elevation-z8">
+
+  <!-- Position Column -->
+  <ng-container matColumnDef="objectName">
+    <th mat-header-cell *matHeaderCellDef> Object Name </th>
+    <td mat-cell *matCellDef="let element"> {{element.objectName}} </td>
+  </ng-container>
+
+  <!-- Name Column -->
+  <ng-container matColumnDef="objectCustomer">
+    <th mat-header-cell *matHeaderCellDef> Customer </th>
+    <td mat-cell *matCellDef="let element"> {{element.objectCustomer}} </td>
+  </ng-container>
+
+  <!-- Weight Column -->
+  <ng-container matColumnDef="executorCompany">
+    <th mat-header-cell *matHeaderCellDef> Executor company </th>
+    <td mat-cell *matCellDef="let element"> {{element.executorCompany}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="actions">
+    <th mat-header-cell *matHeaderCellDef>Actions</th>
+    <td mat-cell *matCellDef="let element">
+      <button mat-button (click)="deleteBuildingObject(element.id)">Delete</button>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="selectProviders">
+    <th mat-header-cell *matHeaderCellDef> Providers </th>
+    <td mat-cell *matCellDef="let element">
+      <button mat-button routerLink="{{element.id}}/providers">Open</button>
+      <button mat-button routerLink="{{element.id}}/providers/add">Add</button>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="selectOrders">
+    <th mat-header-cell *matHeaderCellDef> Orders </th>
+    <td mat-cell *matCellDef="let element">
+      <button mat-button routerLink="{{element.id}}/orders">Open</button>
+      <button mat-button routerLink="{{element.id}}/orders/add">Add</button>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+<router-outlet></router-outlet>

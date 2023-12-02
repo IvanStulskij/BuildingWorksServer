@@ -1,0 +1,36 @@
+<div class="form-container">
+    <form [formGroup]="buildingObjectForm!">
+        <mat-form-field class="form-field" appearance="outline">
+            <mat-label>Name</mat-label>
+            <input matInput formControlName="objectName" required>
+            <mat-error *ngIf="buildingObjectForm!.controls['objectName'].touched && buildingObjectForm!.controls['objectName'].invalid">
+              <span *ngIf="buildingObjectForm!.controls['objectName'].errors">This field is mandatory.</span>
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field class="form-field" appearance="outline">
+            <mat-label>Type</mat-label>
+            <mat-select [(value)]="selectedBuildingObjectType" placeholder="Type">
+              <mat-option  *ngFor="let buildingObjectType of buildingObjectTypes$ | async" [value]="buildingObjectType">{{buildingObjectType.name}}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="buildingObjectForm!.controls['buildingObjectTypeName'].touched && buildingObjectForm!.controls['buildingObjectTypeName'].invalid">
+              <span *ngIf="buildingObjectForm!.controls['buildingObjectTypeName'].errors">This field is mandatory.</span>
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field class="form-field" appearance="outline">
+            <mat-label> Customer</mat-label>
+            <input matInput *ngIf="buildingObjectForm" formControlName="objectCustomer" required>
+            <mat-error *ngIf="buildingObjectForm!.controls['objectCustomer'].touched && buildingObjectForm!.controls['objectCustomer'].invalid">
+              <span *ngIf="buildingObjectForm!.controls['objectCustomer'].errors">This field is mandatory.</span>
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field class="form-field" appearance="outline">
+            <mat-label> Executor</mat-label>
+            <input matInput formControlName="executorCompany" required>
+            <mat-error *ngIf="buildingObjectForm!.controls['executorCompany'].touched && buildingObjectForm!.controls['executorCompany'].invalid">
+              <span *ngIf="buildingObjectForm!.controls['executorCompany'].errors">This field is mandatory.</span>
+            </mat-error>
+        </mat-form-field>
+    </form>
+    <button (click)="saveBuildingObject()">{{submitButtonText}}</button>
+    <button (click)="closeWindow()">Close</button>
+</div>
