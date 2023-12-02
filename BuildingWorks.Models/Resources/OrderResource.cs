@@ -2,11 +2,11 @@
 
 namespace BuildingWorks.Models.Resources;
 
-public class OrderResource : IResource
+public class OrderResource
 {
-    public Guid Id { get; set; }
     public string OrderId { get; set; } = string.Empty;
+    public DateTime PlannedDeliveredAt { get; set; }
     public Guid ProviderId { get; set; }
-    public Guid ContractId { get; set; }
+    public Guid BuildingObjectId { get; set; }
     public IEnumerable<OrderMaterialResource> Materials { get; set; }
 }

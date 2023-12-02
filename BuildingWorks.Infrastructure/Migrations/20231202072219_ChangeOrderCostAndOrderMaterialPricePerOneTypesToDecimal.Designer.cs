@@ -3,6 +3,7 @@ using System;
 using BuildingWorks.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BuildingWorks.Infrastructure.Migrations
 {
     [DbContext(typeof(BuildingWorksDbContext))]
-    partial class BuildingWorksDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231202072219_ChangeOrderCostAndOrderMaterialPricePerOneTypesToDecimal")]
+    partial class ChangeOrderCostAndOrderMaterialPricePerOneTypesToDecimal
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -135,15 +138,12 @@ namespace BuildingWorks.Infrastructure.Migrations
                     b.Property<decimal>("Cost")
                         .HasColumnType("numeric");
 
-                    b.Property<DateTime?>("FactDeliveredAt")
+                    b.Property<DateTime?>("DeliveredAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("OrderID")
                         .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<DateTime>("PlannedDeliveredAt")
-                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid>("ProviderId")
                         .HasColumnType("uuid");
@@ -152,7 +152,7 @@ namespace BuildingWorks.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTime?>("StartDeliverAt")
+                    b.Property<DateTime>("StartDeliverAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Status")

@@ -36,18 +36,21 @@ public class OrdersRepository : IOrdersRepository
                 throw new EntityNotExistException($"Provider with id {entity.ProviderId} not exist in database");
             }
             var order = _mapper.Map<Order>(entity);
-            order.StartDeliverAt = DateTime.UtcNow;
             order.ProviderName = provider.Name;
+            order.StatusId = (int)OrderStatuses.New;
+            order.Status = Constants.OrderStatusesWithNames[OrderStatuses.New];
+            order.Cost = entity.Materials.Sum(material => material.Quantity * material.PricePerOne);
+            var added = await _context.Orders.AddAsync(order);
 
             var orderMaterials = entity.Materials.Select(material => new OrderMaterial
             {
                 MaterialsId = material.Id,
-                OrdersId = entity.Id,
+                OrdersId = added.Entity.Id,
                 Quantity = material.Quantity,
                 PricePerOne = material.PricePerOne,
             });
             await _context.OrderMaterial.AddRangeAsync(orderMaterials);
-            await _context.Orders.AddAsync(order);
+            
 
             await _context.SaveChangesAsync();
             await transaction.CommitAsync();
@@ -80,7 +83,7 @@ public class OrdersRepository : IOrdersRepository
         var updatedCount = await _context.Orders
             .Where(order => order.Id == orderId)
             .ExecuteUpdateAsync(ctx => ctx
-                                        .SetProperty(order => order.DeliveredAt, DateTime.UtcNow)
+                                        .SetProperty(order => order.PlannedDeliveredAt, DateTime.UtcNow)
                                         .SetProperty(order => order.StatusId, (int)OrderStatuses.Delivered)
                                         .SetProperty(order => order.Status, Constants.OrderStatusesWithNames[OrderStatuses.Delivered]));
 

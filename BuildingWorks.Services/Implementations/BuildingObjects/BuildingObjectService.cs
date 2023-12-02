@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using BuildingWorks.Common.Entities;
 using BuildingWorks.Infrastructure.Entities;
+using BuildingWorks.Models.Overviews;
 using BuildingWorks.Models.Overviews.BuildingObjects;
 using BuildingWorks.Models.Overviews.Providers;
 using BuildingWorks.Models.Overviews.Workers;
@@ -36,10 +38,24 @@ public class BuildingObjectService : OverviewService<BuildingObject, BuildingObj
         return Mapper.Map<IEnumerable<BrigadeOverview>>(brigades);
     }
 
+    public async Task<IEnumerable<OrderOverview>> GetOrders(Guid buildingObjectId)
+    {
+        var orders = await _repository.GetOrders(buildingObjectId);
+
+        return Mapper.Map<IEnumerable<OrderOverview>>(orders);
+    }
+
     public async Task<IEnumerable<ProviderOverview>> GetProviders(Guid buildingObjectId)
     {
         var providers = await _repository.GetProviders(buildingObjectId);
 
         return Mapper.Map<IEnumerable<ProviderOverview>>(providers);
+    }
+
+    public async Task<IEnumerable<DictionaryItem>> GetProvidersShortInfos(Guid buildingObjectId)
+    {
+        var shortInfos = await _repository.GetProvidersShortInfos(buildingObjectId);
+
+        return shortInfos;
     }
 }

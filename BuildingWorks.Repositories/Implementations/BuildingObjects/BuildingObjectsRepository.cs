@@ -1,10 +1,12 @@
 ﻿using BuildingWorks.Common.Constants;
+using BuildingWorks.Common.Entities;
 using BuildingWorks.Common.Exceptions;
 using BuildingWorks.Infrastructure;
 using BuildingWorks.Infrastructure.Entities;
 using BuildingWorks.Infrastructure.Entities.Joininig;
 using BuildingWorks.Infrastructure.Entities.Providers;
 using BuildingWorks.Infrastructure.Entities.Workers;
+using BuildingWorks.Models.Overviews;
 using BuildingWorks.Repositories.Abstractions.BuildingObjects;
 using BuildingWorks.Repositories.Abstractions.Plans;
 using BuildingWorks.Repositories.Abstractions.Workers;
@@ -75,9 +77,22 @@ public class BuildingObjectsRepository : OverviewRepository<BuildingObject>, IBu
         return buildingObject.Brigades;
     }
 
-    public async Task<IEnumerable<Order>> GetOrders(Guid buildingObjectId)
+    public async Task<IEnumerable<OrderOverview>> GetOrders(Guid buildingObjectId)
     {
-        var orders = await Context.Orders.AsNoTracking().Where(order => order.BuildingObjectId == buildingObjectId).ToListAsync();
+        var orders = await Context.Orders.AsNoTracking()
+            .Where(order => order.BuildingObjectId == buildingObjectId)
+            .Select(order => new OrderOverview
+            {
+                Id = order.Id,
+                FactDeliveredAt = order.FactDeliveredAt,
+                PlannedDeliveredAt = order.PlannedDeliveredAt,
+                StartDeliverAt = order.StartDeliverAt,
+                Status = order.Status,
+                Cost = order.Cost,
+                ProviderName = order.ProviderName,
+                OrderId = order.OrderID
+            })
+            .ToListAsync();
 
         return orders;
     }
@@ -91,6 +106,20 @@ public class BuildingObjectsRepository : OverviewRepository<BuildingObject>, IBu
             .ToListAsync();
 
         return providers;
+    }
+
+    public async Task<IEnumerable<DictionaryItem>> GetProvidersShortInfos(Guid buildingObjectId)
+    {
+        var shortInfos = await Context.BuildingObjectProvider.AsNoTracking()
+            .Include(provider => provider.Provider)
+            .Where(entity => entity.BuildingObjectsId == buildingObjectId)
+            .Select(entity => new DictionaryItem
+            {
+                Id = entity.ProvidersId.ToString(),
+                Name = entity.Provider.Name
+            }).ToListAsync();
+
+        return shortInfos;
     }
 
     protected override IQueryable<BuildingObject> IncludeHierarchy()

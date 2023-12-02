@@ -11,7 +11,7 @@ public class MaterialResource : Entity, IResource
 public class OrderMaterialResource : Entity, IResource
 {
     public int Quantity { get; set; }
-    public float PricePerOne { get; set; }
+    public decimal PricePerOne { get; set; }
 }
 
 public class OrderMaterialResult : Entity, IResource
@@ -19,5 +19,5 @@ public class OrderMaterialResult : Entity, IResource
     public string Name { get; set; } = string.Empty;
     public string Measure { get; set; } = string.Empty;
     public int Quantity { get; set; }
-    public float PricePerOne { get; set; }
+    public decimal PricePerOne { get; set; }
 }

@@ -1,4 +1,5 @@
-﻿using BuildingWorks.Models.Overviews;
+﻿using BuildingWorks.Common.Entities;
+using BuildingWorks.Models.Overviews;
 using BuildingWorks.Models.Overviews.BuildingObjects;
 using BuildingWorks.Models.Overviews.Providers;
 using BuildingWorks.Models.Overviews.Workers;
@@ -13,4 +14,5 @@ public interface IBuildingObjectService : IOverviewService<BuildingObjectResourc
     Task AddProvider(Guid buildingObjectId, Guid providerId);
     Task DeleteProvider(Guid buildingObjectId, Guid providerId);
     Task<IEnumerable<OrderOverview>> GetOrders(Guid buildingObjectId);
+    Task<IEnumerable<DictionaryItem>> GetProvidersShortInfos(Guid buildingObjectId);
 }

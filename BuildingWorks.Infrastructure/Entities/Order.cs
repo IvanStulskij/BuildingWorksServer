@@ -6,10 +6,11 @@ namespace BuildingWorks.Infrastructure.Entities;
 
 public class Order : Entity
 {
-    public float Cost { get; set; }
-    public int OrderID { get; set; }
-    public DateTime? DeliveredAt { get; set; }
-    public DateTime StartDeliverAt { get; set; }
+    public decimal Cost { get; set; }
+    public string OrderID { get; set; } = string.Empty;
+    public DateTime? FactDeliveredAt { get; set; }
+    public DateTime PlannedDeliveredAt { get; set; }
+    public DateTime? StartDeliverAt { get; set; }
     public string ProviderName { get; set; } = string.Empty;
     public int StatusId { get; set; }
     public string Status { get; set; } = string.Empty;
@@ -25,7 +26,7 @@ public class Order : Entity
 
 public enum OrderStatuses
 {
-    Created = 0,
+    New = 0,
     ApprovedByProvider = 1,
     ApprovedByContractor = 2,
     StartDeliver = 4,

@@ -4,7 +4,12 @@ namespace BuildingWorks.Profiles;
 
 public abstract class BaseProfile<T, TResource> : Profile
 {
-    public BaseProfile()
+    protected BaseProfile()
+    {
+        ConfigureResourceProfile();
+    }
+
+    protected virtual void ConfigureResourceProfile()
     {
         CreateMap<T, TResource>().ReverseMap();
     }
@@ -12,7 +17,7 @@ public abstract class BaseProfile<T, TResource> : Profile
 
 public abstract class BaseOverviewProfile<T, TResource, TOverview> : BaseProfile<T, TResource>
 {
-    public BaseOverviewProfile()
+    protected BaseOverviewProfile()
     {
         CreateMap<T, TResource>().ReverseMap();
         ConfigureOverviewProfiling();

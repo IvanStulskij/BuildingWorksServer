@@ -21,6 +21,7 @@ public static class ConfigurationExtensions
         ConfigureBuildingObjectProvider(modelBuilder.Entity<BuildingObjectProvider>());
         ConfigureProviderMaterial(modelBuilder.Entity<MaterialProvider>());
         ConfigureOrders(modelBuilder.Entity<Order>());
+        ConfigureOrderMaterials(modelBuilder.Entity<OrderMaterial>());
     }
 
     private static void ConfigureProviders(EntityTypeBuilder<Provider> providersBuilder)
@@ -142,5 +143,14 @@ public static class ConfigurationExtensions
             .HasMany(order => order.Materials)
             .WithMany(material => material.Orders)
             .UsingEntity<OrderMaterial>();
+    }
+
+    public static void ConfigureOrderMaterials(EntityTypeBuilder<OrderMaterial> orderMaterialsBuilder)
+    {
+        orderMaterialsBuilder.HasKey(entity => new
+        {
+            entity.OrdersId,
+            entity.MaterialsId
+        });
     }
 }
