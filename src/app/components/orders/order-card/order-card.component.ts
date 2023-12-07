@@ -21,7 +21,7 @@ import { OrderMaterialComponent } from '../order-material/order-material.compone
 export class OrderCardComponent implements OnInit {
   @ViewChild(MatTable) table!: MatTable<Material>;
 
-  displayedMaterialColumns: string[] = ['name', 'measure', 'quantity', 'pricePerOne', 'totalPrice', ''];
+  displayedMaterialColumns: string[] = ['name', 'measure', 'quantity', 'pricePerOne', 'totalPrice'];
   providersShortInfos$!: Observable<DictionaryItem[]>;
   selectedProvider!: DictionaryItem;
   order$ = this.store.pipe(select(selectBuildingObjectOrder));
@@ -87,6 +87,7 @@ export class OrderCardComponent implements OnInit {
   }
 
   selectOrderMaterials() : void {
+    console.log(this.selectedProvider.id)
     this.store.dispatch(new GetMaterialsByProvider(this.selectedProvider.id));
   }
 }

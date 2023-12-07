@@ -7,6 +7,7 @@ import { IMaterialState, initialMaterialState } from "./material.state";
 import { IBuildingObjectProviderState, initialBuildingObjectProviderState } from "./building-object-provider.state";
 import { IProviderMaterialState, initialProviderMaterialState } from "./provider-material.state";
 import { IOrderState, initialOrderState } from "./building-object-order.state";
+import { IOrderMaterialState, initialOrderMaterialState } from "./order-material.state";
 
 export interface IAppState {
     router?: RouterReducerState;
@@ -17,7 +18,8 @@ export interface IAppState {
     materials: IMaterialState,
     buildingObjectProviders: IBuildingObjectProviderState,
     providerMaterials: IProviderMaterialState,
-    orders: IOrderState
+    orders: IOrderState,
+    orderMaterials: IOrderMaterialState
 }
 
 export const initialAppState: IAppState = {
@@ -28,5 +30,6 @@ export const initialAppState: IAppState = {
     materials: initialMaterialState,
     buildingObjectProviders: initialBuildingObjectProviderState,
     providerMaterials: initialProviderMaterialState,
-    orders: initialOrderState
+    orders: initialOrderState,
+    orderMaterials: initialOrderMaterialState
 }

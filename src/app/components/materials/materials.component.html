@@ -1,4 +1,4 @@
-<button *ngIf="!id && !providerId" mat-button (click)="navigateToCreateWindow()">Create</button>
+<button *ngIf="!orderId && !providerId" mat-button (click)="navigateToCreateWindow()">Create</button>
 
 <table mat-table [dataSource]="(materials$ | async) ?? []" class="mat-elevation-z8">
 
@@ -27,14 +27,14 @@
 
   <ng-container matColumnDef="totalPrice">
     <th mat-header-cell *matHeaderCellDef> Total price </th>
-    <td mat-cell *matCellDef="let element"> {{element.totalPrice}} </td>
+    <td mat-cell *matCellDef="let element"> {{element.pricePerOne * element.quantity}} </td>
   </ng-container>
 
-  <ng-container matColumnDef="addToCollection">
+  <ng-container *ngIf="providerId && isAdd" matColumnDef="addToCollection">
     <th mat-header-cell *matHeaderCellDef>Actions</th>
     <td  mat-cell *matCellDef="let element">
-      <button *ngIf="id && isAdd" mat-button (click)="addToCollection(element.id, element.id)">Add to collection</button>
-      <button *ngIf="!id && !providerId" mat-button (click)="navigateToMaterial(element.id)">Edit</button>
+      <button mat-button (click)="addToCollection(element.id, element.id)">Add to collection</button>
+      <button mat-button (click)="navigateToMaterial(element.id)">Edit</button>
       <button mat-button (click)="deleteMaterial(element.id)">Delete</button>
     </td>
   </ng-container>

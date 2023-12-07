@@ -61,6 +61,7 @@ import { OrdersService } from './services/order.service';
 import { OrderCardComponent } from './components/orders/order-card/order-card.component';
 import { OrderMaterialComponent } from './components/orders/order-material/order-material.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { OrderMaterialEffects } from './store/effects/order-material.effects';
 
 @NgModule({
   declarations: [
@@ -108,7 +109,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     NotifierModule,
     FormsModule,
     StoreModule.forRoot(appReducers),
-    EffectsModule.forRoot([BuildingObjectEffects, PlanEffects, ProviderEffects, WorkerEffects, MaterialEffects, DictionaryEffects, BuildingObjectProviderEffects, ProviderMaterialEffects, OrderEffects ]),
+    EffectsModule.forRoot([BuildingObjectEffects, PlanEffects, ProviderEffects, WorkerEffects, MaterialEffects, DictionaryEffects, BuildingObjectProviderEffects, ProviderMaterialEffects, OrderEffects, OrderMaterialEffects ]),
     StoreRouterConnectingModule.forRoot({ stateKey: 'router' }),
     !environment.production? StoreDevtoolsModule.instrument() : [],
   ],

@@ -9,6 +9,7 @@ import { materialReducer } from "./material.reducer";
 import { buildingObjectProviderReducer } from "./building-object-provider.reducer";
 import { providerMaterialReducer } from "./provider-material.reducer";
 import { orderReducer } from "./order.reducer";
+import { orderMaterialReducer } from "./order-material.reducer";
 
 export const appReducers: ActionReducerMap<IAppState, any> = {
     router: routerReducer,
@@ -19,5 +20,6 @@ export const appReducers: ActionReducerMap<IAppState, any> = {
     materials: materialReducer,
     buildingObjectProviders: buildingObjectProviderReducer,
     providerMaterials: providerMaterialReducer,
-    orders: orderReducer
+    orders: orderReducer,
+    orderMaterials: orderMaterialReducer
 };

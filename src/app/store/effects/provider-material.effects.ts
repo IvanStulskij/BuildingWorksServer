@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { ofType, Actions, createEffect } from "@ngrx/effects";
 import { Store } from "@ngrx/store";
-import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
+import { catchError, map, switchMap } from 'rxjs/operators';
 import { IAppState } from "../states/app.state";
 import { of } from "rxjs";
 import { AddMaterialToProvider, AddMaterialToProviderSuccess, EMaterialActions, GetMaterialsByProvider, GetMaterialsByProviderSuccess } from "../actions/material.actions";
@@ -25,7 +25,7 @@ export class ProviderMaterialEffects {
         ofType<AddMaterialToProvider>(EMaterialActions.AddMaterialToProvider),
         map(action => action.payload),
         switchMap((providerMaterial) => {
-            this.service.addToContract(providerMaterial);
+            this.service.addToProvider(providerMaterial);
 
             return of();
         }),

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Store, select } from '@ngrx/store';
-import { AddMaterialToContract, DeleteContractMaterial, DeleteMaterial, GetMaterials, GetMaterialsByContract, GetMaterialsByProvider } from 'src/app/store/actions/material.actions';
+import { AddMaterialToProvider, DeleteMaterial, GetMaterials, GetMaterialsByOrder, GetMaterialsByProvider } from 'src/app/store/actions/material.actions';
 import { selectMaterialList } from 'src/app/store/selectors/material.selector';
 import { IAppState } from 'src/app/store/states/app.state';
 import { MaterialCardComponent } from './material-card/material-card.component';
@@ -10,6 +10,7 @@ import { Observable, map } from 'rxjs';
 import { Material } from 'src/app/types/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { selectProviderMaterialList } from 'src/app/store/selectors/provider-material.selector';
+import { selectOrderMaterialList } from 'src/app/store/selectors/order-material.selector';
 
 @Component({
   selector: 'app-materials',
@@ -17,10 +18,10 @@ import { selectProviderMaterialList } from 'src/app/store/selectors/provider-mat
   styleUrls: ['./materials.component.scss']
 })
 export class MaterialsComponent implements OnInit {
-  displayedReferencedColumns: string[] = ['pricePerOne', 'quantity', 'totalPrice'];
-  displayedColumns: string[] = ['name', 'pricePerOne', 'measure', 'addToCollection', 'quantity', 'totalPrice'];
-  id: string | null;
+  displayedReferencedColumns: string[] = ['pricePerOne', 'quantity', 'totalPrice', 'addToCollection'];
+  displayedColumns: string[] = ['name', 'pricePerOne', 'measure', 'quantity', 'totalPrice'];
   providerId: string | null;
+  orderId: string | null;
 
   isAdd!: boolean;
   private dataSource = new MatTableDataSource<Material>();
@@ -28,8 +29,8 @@ export class MaterialsComponent implements OnInit {
   materials$: Observable<MatTableDataSource<Material>> = new Observable<MatTableDataSource<Material>>();
   
   constructor(private store: Store<IAppState>, private dialog: MatDialog, private activatedRoute: ActivatedRoute, private route: Router) {
-    this.id = this.activatedRoute.snapshot.paramMap.get("id");
     this.providerId = this.activatedRoute.snapshot.paramMap.get("providerId");
+    this.orderId = this.activatedRoute.snapshot.paramMap.get("orderId");
 
     this.isAdd = this.route.url.includes("add");
     let selector = select(selectMaterialList);
@@ -38,6 +39,10 @@ export class MaterialsComponent implements OnInit {
       if (this.route.url.includes("providers")) {
         selector = select(selectProviderMaterialList);
       }
+
+      if (this.route.url.includes("orders")) {
+        selector = select(selectOrderMaterialList);
+      }
     }
     this.materials$ = this.store.pipe(selector, map(material => {
       const dataSource = this.dataSource;
@@ -45,37 +50,22 @@ export class MaterialsComponent implements OnInit {
       return dataSource;
     }));
 
-    if (!this.id) {
+    if (!this.orderId) {
       this.displayedColumns = this.displayedColumns.filter(column => !this.displayedReferencedColumns.includes(column));
     }
   }
 
   ngOnInit(): void {
-    if (this.id) {
-      if (this.isAdd) {
-        if (this.providerId) {
-          this.store.dispatch(new GetMaterialsByProvider(this.providerId!));
-        }
-        else {
-          this.store.dispatch(new GetMaterials());
-        }
-      }
-      else {
-        if (this.providerId) {
-          this.store.dispatch(new GetMaterialsByContract(this.id, this.providerId!));
-        }
-      }
-    }
-    else if (!this.id && this.providerId) {
-      if (this.isAdd) {
-        this.store.dispatch(new GetMaterials());
-      }
-      else {
-        this.store.dispatch(new GetMaterialsByProvider(this.providerId));
-      }
+    if (this.isAdd) {
+      this.store.dispatch(new GetMaterials());
     }
     else {
-      this.store.dispatch(new GetMaterials());
+      if (this.providerId) {
+        this.store.dispatch(new GetMaterialsByProvider(this.providerId));
+      }
+      else if (this.orderId) {
+        this.store.dispatch(new GetMaterialsByOrder(this.orderId));
+      }
     }
   }
 
@@ -96,30 +86,19 @@ export class MaterialsComponent implements OnInit {
 
   addToCollection(materialId: string, providerId: string) : void {
     if (this.isAdd) {
-      if (this.route.url.includes("contracts")) {
-        this.store.dispatch(new AddMaterialToContract({
-          materialsId: materialId,
-          contractsId: this.id!,
-          providerId: providerId
-        }));
-      }
-      else if (!this.route.url.includes("contracts") && this.route.url.includes("providers")) {
 
-      }
     }
-    
+    else if (this.providerId) {
+      this.store.dispatch(new AddMaterialToProvider({
+        materialsId: materialId,
+        providersId: providerId
+      }));
+    }
   }
 
   deleteMaterial(id: string) : void {
-    if (this.id) {
-      this.store.dispatch(new DeleteContractMaterial({
-        contractsId: this.id,
-        materialsId: id,
-        providerId: this.providerId!
-      }));
-    }
-    else if (!this.id && this.providerId) {
-      
+    if (this.providerId) {
+
     }
     else {
       this.store.dispatch(new DeleteMaterial(id));

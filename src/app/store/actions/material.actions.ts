@@ -1,5 +1,5 @@
 import { Action } from "@ngrx/store";
-import { Material, MaterialContract } from "src/app/types/material";
+import { Material, MaterialContract, MaterialProvider } from "src/app/types/material";
 
 export enum EMaterialActions {
     GetMaterials = '[Material] Get Materials',
@@ -14,9 +14,9 @@ export enum EMaterialActions {
     GetMaterialsByProviderSuccess = '[Material] Get Materials By Provider Success',
     GetMaterialsByProviderFail = '[Material] Get Materials By Provider Fail',
 
-    GetMaterialsByContract = '[Material] Get Materials By Contract',
-    GetMaterialsByContractSuccess = '[Material] Get Materials By Contract Success',
-    GetMaterialsByContractFail = '[Material] Get Materials By Contract Fail',
+    GetMaterialsByOrder = '[Material] Get Materials By Order',
+    GetMaterialsByOrderSuccess = '[Material] Get Materials By Order Success',
+    GetMaterialsByOrderFail = '[Material] Get Materials By Order Fail',
 
     CreateMaterial = '[Material] Create Material',
     CreateMaterialSuccess = '[Material] Create Material Success',
@@ -25,10 +25,6 @@ export enum EMaterialActions {
     AddMaterialToProvider = '[Material] Add Material To Provider',
     AddMaterialToProviderSuccess = '[Material] Add Material To Provider Success',
     AddMaterialToProviderFail = '[Material] Add Material To Provider Fail',
-
-    AddMaterialToContract = '[Material] Add Material To Contract',
-    AddMaterialToContractSuccess = '[Material] Add Material To Contract',
-    AddMaterialToContractFail = '[Material] Create Material Fail',
 
     DeleteMaterial = '[Material] Delete Material',
     DeleteMaterialSuccess = '[Material] Delete Material Success',
@@ -52,6 +48,16 @@ export class GetMaterialsSuccess implements Action {
     constructor(public payload: Material[]) {}
 }
 
+export class GetMaterialsByOrder implements Action {
+    public readonly type = EMaterialActions.GetMaterialsByOrder;
+    constructor(public payload: string) {}
+}
+
+export class GetMaterialsByOrderSuccess implements Action {
+    public readonly type = EMaterialActions.GetMaterialsByOrderSuccess;
+    constructor(public payload: Material[]) {}
+}
+
 export class GetMaterialsByProvider implements Action {
     public readonly type = EMaterialActions.GetMaterialsByProvider;
     constructor(public payload: string) {} 
@@ -72,32 +78,13 @@ export class GetMaterialSuccess implements Action {
     constructor(public payload: Material) {}
 }
 
-export class GetMaterialsByContract implements Action {
-    public readonly type = EMaterialActions.GetMaterialsByContract;
-    constructor(public payload: string, public providerId: string) {}
-}
-
-export class GetMaterialsByContractSuccess implements Action {
-    public readonly type = EMaterialActions.GetMaterialsByContractSuccess;
-    constructor(public payload: Material[]) {}
-}
-
 export class AddMaterialToProvider implements Action {
     public readonly type = EMaterialActions.AddMaterialToProvider;
-    constructor(public payload: MaterialContract) {}
+    constructor(public payload: MaterialProvider) {}
 }
 
 export class AddMaterialToProviderSuccess implements Action {
     public readonly type = EMaterialActions.AddMaterialToProviderSuccess;
-}
-
-export class AddMaterialToContract implements Action {
-    public readonly type = EMaterialActions.AddMaterialToContract;
-    constructor(public payload: MaterialContract) {}
-}
-
-export class AddMaterialToContractSuccess implements Action {
-    public readonly type = EMaterialActions.AddMaterialToContractSuccess;
 }
 
 export class CreateMaterial implements Action {
@@ -146,8 +133,7 @@ export type MaterialActions =
     GetMaterials | GetMaterialsSuccess | 
     GetMaterial | GetMaterialSuccess | 
     GetMaterialsByProvider | GetMaterialsByProviderSuccess |
-    GetMaterialsByContract  | GetMaterialsByContractSuccess |
-    AddMaterialToContract | AddMaterialToContractSuccess |
+    GetMaterialsByOrder | GetMaterialsByOrderSuccess |
     AddMaterialToProvider | AddMaterialToProviderSuccess |
     CreateMaterial | CreateMaterialSuccess | 
     DeleteMaterial | DeleteMaterialSuccess | 
