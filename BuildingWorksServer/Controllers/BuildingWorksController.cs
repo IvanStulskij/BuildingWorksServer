@@ -1,4 +1,5 @@
-﻿using BuildingWorks.Models.Overviews;
+﻿using BuildingWorks.Infrastructure.Loading;
+using BuildingWorks.Models.Overviews;
 using BuildingWorks.Models.Resources;
 using BuildingWorks.Services.Interfaces;
 using Microsoft.AspNetCore.Http.Extensions;
@@ -70,9 +71,9 @@ public abstract class BuildingWorksOverviewController<TResource, TOverview> : Bu
     }
 
     [HttpGet("overview")]
-    public IActionResult GetAllOverview()
+    public async Task<IActionResult> GetAllOverview([FromQuery] LoadConditions loadConditions)
     {
-        var entities = _service.GetAllOverview();
+        var entities = await _service.GetAllOverview(loadConditions);
 
         return Ok(entities);
     }

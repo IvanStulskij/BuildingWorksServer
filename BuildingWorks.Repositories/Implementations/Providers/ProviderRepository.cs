@@ -3,12 +3,13 @@ using BuildingWorks.Common.Exceptions;
 using BuildingWorks.Infrastructure;
 using BuildingWorks.Infrastructure.Entities.Joininig;
 using BuildingWorks.Infrastructure.Entities.Providers;
+using BuildingWorks.Models.Overviews.Providers;
 using BuildingWorks.Repositories.Abstractions.Providers;
 using Microsoft.EntityFrameworkCore;
 
 namespace BuildingWorks.Repositories.Implementations.Providers;
 
-public class ProviderRepository : OverviewRepository<Provider>, IProviderRepository
+public class ProviderRepository : OverviewRepository<Provider, ProviderOverview>, IProviderRepository
 {
     public ProviderRepository(BuildingWorksDbContext context) : base(context)
     {
@@ -69,8 +70,15 @@ public class ProviderRepository : OverviewRepository<Provider>, IProviderReposit
         return providers;
     }
 
-    protected override IQueryable<Provider> IncludeHierarchy()
+    protected override IQueryable<ProviderOverview> IncludeHierarchy()
     {
-        return Set;
+        return Set.Select(x => new ProviderOverview
+        {
+            Id = x.Id,
+            Name = x.Name,
+            AdditionalData = x.AdditionalData,
+            Country = x.Country,
+            Signer = x.Signer
+        });
     }
 }

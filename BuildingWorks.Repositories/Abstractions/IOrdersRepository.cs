@@ -1,4 +1,5 @@
-﻿using BuildingWorks.Models.Resources;
+﻿using BuildingWorks.Common.Entities;
+using BuildingWorks.Models.Resources;
 using BuildingWorks.Models.Resources.Providers;
 
 namespace BuildingWorks.Repositories.Abstractions;
@@ -10,4 +11,5 @@ public interface IOrdersRepository
     Task<IEnumerable<OrderMaterialResult>> GetMaterials(Guid orderId);
     Task SendOrderLink(Guid orderId);
     Task<bool> ApproveByProvider(Guid id);
+    Task<IEnumerable<DictionaryItem>> GetMaterialsToAddToOrder(Guid providerId, Guid orderId);
 }

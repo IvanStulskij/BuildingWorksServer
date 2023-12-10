@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BuildingWorks.Common.Entities;
 using BuildingWorks.Common.Exceptions;
 using BuildingWorks.Infrastructure;
 using BuildingWorks.Infrastructure.Entities;
@@ -114,5 +115,10 @@ public class OrdersRepository : IOrdersRepository
                                                 .SetProperty(order => order.Status, Constants.OrderStatusesWithNames[OrderStatuses.ApprovedByProvider]));
 
         return updatedCount > 0;
+    }
+
+    public async Task<IEnumerable<DictionaryItem>> GetMaterialsToAddToOrder(Guid providerId, Guid orderId)
+    {
+        return Enumerable.Empty<DictionaryItem>();
     }
 }

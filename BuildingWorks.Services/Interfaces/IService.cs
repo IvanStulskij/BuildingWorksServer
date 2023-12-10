@@ -1,4 +1,5 @@
-﻿using BuildingWorks.Models.Overviews;
+﻿using BuildingWorks.Infrastructure.Loading;
+using BuildingWorks.Models.Overviews;
 using BuildingWorks.Models.Resources;
 
 namespace BuildingWorks.Services.Interfaces;
@@ -21,5 +22,5 @@ public interface IOverviewService<TResource, TOverview> : IService<TResource>
         where TResource : IResource
         where TOverview : IOverview
 {
-    IEnumerable<TOverview> GetAllOverview();
+    Task<IEnumerable<TOverview>> GetAllOverview(LoadConditions loadConditions);
 }

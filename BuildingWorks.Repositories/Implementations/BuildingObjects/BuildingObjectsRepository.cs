@@ -7,6 +7,7 @@ using BuildingWorks.Infrastructure.Entities.Joininig;
 using BuildingWorks.Infrastructure.Entities.Providers;
 using BuildingWorks.Infrastructure.Entities.Workers;
 using BuildingWorks.Models.Overviews;
+using BuildingWorks.Models.Overviews.BuildingObjects;
 using BuildingWorks.Repositories.Abstractions.BuildingObjects;
 using BuildingWorks.Repositories.Abstractions.Plans;
 using BuildingWorks.Repositories.Abstractions.Workers;
@@ -16,7 +17,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BuildingWorks.Repositories.Implementations.BuildingObjects;
 
-public class BuildingObjectsRepository : OverviewRepository<BuildingObject>, IBuildingObjectRepository
+public class BuildingObjectsRepository : OverviewRepository<BuildingObject, BuildingObjectOverview>, IBuildingObjectRepository
 {
     private readonly IPlanRepository _plansRepository;
     private readonly IBrigadeRepository _brigadesRepository;
@@ -122,9 +123,17 @@ public class BuildingObjectsRepository : OverviewRepository<BuildingObject>, IBu
         return shortInfos;
     }
 
-    protected override IQueryable<BuildingObject> IncludeHierarchy()
+    protected override IQueryable<BuildingObjectOverview> IncludeHierarchy()
     {
-        return Set;
+        return Set.Select(x => new BuildingObjectOverview
+        {
+            Id = x.Id,
+            BuildingObjectType = x.BuildingObjectType,
+            BuildingObjectTypeName = x.BuildingObjectTypeName,
+            ExecutorCompany = x.ExecutorCompany,
+            ObjectCustomer = x.ObjectCustomer,
+            ObjectName = x.ObjectName
+        });
     }
 
     private float CalculatePlansCost()

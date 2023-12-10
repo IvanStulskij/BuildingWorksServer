@@ -1,5 +1,6 @@
 ﻿using BuildingWorks.Models.Resources;
 using BuildingWorks.Repositories.Abstractions;
+using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BuildingWorksServer.Controllers;
@@ -20,7 +21,7 @@ public class OrdersController : ControllerBase
 	{
 		await _repository.Add(order);
 
-		return Ok();
+		return Created(Request.GetDisplayUrl(), order);
 	}
 
 	[HttpPost("{id}/send-link")]

@@ -3,10 +3,11 @@ using BuildingWorks.Infrastructure.Entities;
 using BuildingWorks.Infrastructure.Entities.Providers;
 using BuildingWorks.Infrastructure.Entities.Workers;
 using BuildingWorks.Models.Overviews;
+using BuildingWorks.Models.Overviews.BuildingObjects;
 
 namespace BuildingWorks.Repositories.Abstractions.BuildingObjects;
 
-public interface IBuildingObjectRepository : IOverviewRepository<BuildingObject>
+public interface IBuildingObjectRepository : IOverviewRepository<BuildingObject, BuildingObjectOverview>
 {
     Task<float> CalculateTotalCost(Guid buildingObjectId);
     Task<IEnumerable<Brigade>> GetBrigades(Guid buildingObjectId);

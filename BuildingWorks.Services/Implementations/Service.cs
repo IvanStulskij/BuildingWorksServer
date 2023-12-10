@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BuildingWorks.Common.Entities;
+using BuildingWorks.Infrastructure.Loading;
 using BuildingWorks.Models.Overviews;
 using BuildingWorks.Models.Resources;
 using BuildingWorks.Repositories.Abstractions;
@@ -63,15 +64,16 @@ public abstract class OverviewService<T, TResource, TOverview> : Service<T, TRes
     where TResource : IResource
     where TOverview : IOverview
 {
-    protected IOverviewRepository<T> OverviewRepository { get; init; }
+    protected IOverviewRepository<T, TOverview> OverviewRepository { get; init; }
 
-    protected OverviewService(IMapper mapper, IOverviewRepository<T> repository, IValidator<TResource> validator) : base(mapper, repository, validator)
+    protected OverviewService(IMapper mapper, IOverviewRepository<T, TOverview> repository, IValidator<TResource> validator) : base(mapper, repository, validator)
     {
         OverviewRepository = repository;
     }
 
-    public virtual IEnumerable<TOverview> GetAllOverview()
+    public virtual async Task<IEnumerable<TOverview>> GetAllOverview(LoadConditions loadConditions)
     {
-        return Mapper.Map<IEnumerable<TOverview>>(OverviewRepository.GetOverviewDisplayedData());
+        var loadedData = await OverviewRepository.GetOverviewDisplayedData(loadConditions);
+        return loadedData; 
     }
 }

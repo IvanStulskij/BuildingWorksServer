@@ -1,6 +1,7 @@
 ﻿using BuildingWorks.Common.Entities;
 using BuildingWorks.Common.Exceptions;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
 namespace BuildingWorks.Infrastructure.Loading;
@@ -35,7 +36,7 @@ public class Sorter<TEntity> : ISorter<TEntity>
 
         foreach (var sortDefinition in sortDefinitions)
         {
-            if (!Properties.Contains(sortDefinition.Field))
+            if (!Properties.Contains(sortDefinition.Field, new StringCaseInsensetiveEqualityComparer()))
             {
                 throw new EntityNotExistException($"Property {sortDefinition.Field} not exist in table ${typeof(TEntity).Name}");
             }
@@ -63,4 +64,17 @@ public class SortDefinition
 {
     public string Field { get; set; } = string.Empty;
     public string Order { get; set; } = string.Empty;
+}
+
+public class StringCaseInsensetiveEqualityComparer : IEqualityComparer<string>
+{
+    public bool Equals(string? x, string? y)
+    {
+        return x.Equals(y, StringComparison.OrdinalIgnoreCase);
+    }
+
+    public int GetHashCode([DisallowNull] string obj)
+    {
+        return obj.GetHashCode();
+    }
 }

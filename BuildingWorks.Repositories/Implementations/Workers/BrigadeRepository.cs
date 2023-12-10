@@ -2,13 +2,15 @@
 using BuildingWorks.Infrastructure;
 using BuildingWorks.Infrastructure.Entities.Joininig;
 using BuildingWorks.Infrastructure.Entities.Workers;
+using BuildingWorks.Models.Overviews.BuildingObjects;
+using BuildingWorks.Models.Overviews.Workers;
 using BuildingWorks.Repositories.Abstractions.Workers;
 using BuildingWorks.Repositories.Query;
 using Microsoft.EntityFrameworkCore;
 
 namespace BuildingWorks.Repositories.Implementations.Workers;
 
-public class BrigadeRepository : OverviewRepository<Brigade>, IBrigadeRepository
+public class BrigadeRepository : OverviewRepository<Brigade, BrigadeOverview>, IBrigadeRepository
 {
     public BrigadeRepository(BuildingWorksDbContext context) : base(context)
     {
@@ -47,8 +49,26 @@ public class BrigadeRepository : OverviewRepository<Brigade>, IBrigadeRepository
         return workers;
     }
 
-    protected override IQueryable<Brigade> IncludeHierarchy()
+    protected override IQueryable<BrigadeOverview> IncludeHierarchy()
     {
-        return Set.IncludeHierarchy();
+        return Set.IncludeHierarchy().Select(x => new BrigadeOverview
+        {
+            Id = x.Id,
+            WorkersCount = x.Workers.Count,
+            Brigadier = new WorkerOverview
+            {
+                Id = x.Brigadier.Id,
+                FirstName = x.Brigadier.FirstName,
+                LastName = x.Brigadier.LastName,
+                MiddleName = x.Brigadier.MiddleName,
+                IsBrigadier = true,
+                StartWorkDate = x.Brigadier.StartWorkDate
+            },
+            BuildingObject = new BuildingObjectOverview
+            {
+                Id = x.BuildingObject.Id,
+            },
+            Number = x.Number
+        });
     }
 }

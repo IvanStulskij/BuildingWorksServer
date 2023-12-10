@@ -3,6 +3,7 @@ using BuildingWorks.Common.Entities;
 using BuildingWorks.Common.Exceptions;
 using BuildingWorks.Infrastructure;
 using BuildingWorks.Infrastructure.Entities.Providers;
+using BuildingWorks.Models.Overviews.Providers;
 using BuildingWorks.Repositories.Abstractions.Providers;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
@@ -10,7 +11,7 @@ using System.Reflection.Metadata;
 
 namespace BuildingWorks.Repositories.Implementations.Providers;
 
-public class MaterialRepository : OverviewRepository<Material>, IMaterialRepository
+public class MaterialRepository : OverviewRepository<Material, MaterialOverview>, IMaterialRepository
 {
     public MaterialRepository(BuildingWorksDbContext context) : base(context)
     {
@@ -27,8 +28,13 @@ public class MaterialRepository : OverviewRepository<Material>, IMaterialReposit
         return dictionaryItems;
     }
 
-    protected override IQueryable<Material> IncludeHierarchy()
+    protected override IQueryable<MaterialOverview> IncludeHierarchy()
     {
-        return Set;
+        return Set.Select(x => new MaterialOverview
+        {
+            Id = x.Id,
+            Name = x.Name,
+            Measure = x.Measure
+        });
     }
 }
