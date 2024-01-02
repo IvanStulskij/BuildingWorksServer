@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DefaultItemsPerPage } from 'src/app/constants';
 import { BrigadesService } from 'src/app/services/brigades.service';
 import { Brigade } from 'src/app/types/brigades';
+import { LoadResult } from 'src/app/types/loader';
 
 @Component({
   selector: 'app-brigades',
@@ -20,8 +21,8 @@ export class BrigadesComponent implements OnInit {
       filter: null,
       sorter: null
     })
-      .subscribe((result: Brigade[]) => {
-        this.brigades = result
+      .subscribe((result: LoadResult<Brigade>) => {
+        this.brigades = result.data;
       });
   }
 

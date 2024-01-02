@@ -4,6 +4,7 @@ import { Store, select } from '@ngrx/store';
 import { GetMaterial, GetMaterialsByProvider } from 'src/app/store/actions/material.actions';
 import { selectProviderMaterial, selectProviderMaterialList } from 'src/app/store/selectors/provider-material.selector';
 import { IAppState } from 'src/app/store/states/app.state';
+import { LoadResult } from 'src/app/types/loader';
 import { Material } from 'src/app/types/material';
 
 @Component({
@@ -12,10 +13,10 @@ import { Material } from 'src/app/types/material';
   styleUrls: ['./order-material.component.scss']
 })
 export class OrderMaterialComponent implements OnInit {
-  materials$ = this.store.pipe(select(selectProviderMaterialList));
+  //materials$ = this.store.pipe(select(selectProviderMaterialList));
   material$ = this.store.pipe(select(selectProviderMaterial));
 
-  materials!: Material[];
+  materials!: LoadResult<Material> | null;
   selectedMaterial!: Material | null;
   pricePerOne!: number;
   quantity!: number;
@@ -34,8 +35,8 @@ export class OrderMaterialComponent implements OnInit {
   getMaterialsList() : void {
     this.store.dispatch(new GetMaterialsByProvider(this.data.providerId));
 
-    this.materials$.subscribe(materials => {
-      this.materials = materials?.data!;  
+    this.store.pipe(select(selectProviderMaterialList)).subscribe(materials => {
+      this.materials = materials;  
     });
   }
 

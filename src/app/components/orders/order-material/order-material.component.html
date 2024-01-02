@@ -1,5 +1,5 @@
 <mat-select [(value)]="selectedMaterial" placeholder="Type">
-    <mat-option *ngFor="let material of this.materials$ | async" (onSelectionChange)="changeSelectedMaterial(material)" [value]="material">{{material.name}}</mat-option>
+    <mat-option *ngFor="let material of this.materials?.data" (onSelectionChange)="changeSelectedMaterial(material)" [value]="material">{{material.name}}</mat-option>
 </mat-select>
 
 <div class="material-item">
