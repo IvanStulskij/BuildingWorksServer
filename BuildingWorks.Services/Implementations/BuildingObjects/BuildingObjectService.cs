@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BuildingWorks.Common.Entities;
 using BuildingWorks.Infrastructure.Entities;
+using BuildingWorks.Infrastructure.Loading;
 using BuildingWorks.Models.Overviews;
 using BuildingWorks.Models.Overviews.BuildingObjects;
 using BuildingWorks.Models.Overviews.Providers;
@@ -31,25 +32,25 @@ public class BuildingObjectService : OverviewService<BuildingObject, BuildingObj
         await _repository.DeleteProvider(buildingObjectId, providerId);
     }
 
-    public async Task<IEnumerable<BrigadeOverview>> GetBrigades(Guid buildingObjectId)
+    public async Task<LoadResult<BrigadeOverview>> GetBrigades(Guid buildingObjectId, LoadConditions loadConditions)
     {
-        var brigades = await _repository.GetBrigades(buildingObjectId);
+        var brigades = await _repository.GetBrigades(buildingObjectId, loadConditions);
 
-        return Mapper.Map<IEnumerable<BrigadeOverview>>(brigades);
+        return brigades;
     }
 
-    public async Task<IEnumerable<OrderOverview>> GetOrders(Guid buildingObjectId)
+    public async Task<LoadResult<OrderOverview>> GetOrders(Guid buildingObjectId, LoadConditions loadConditions)
     {
-        var orders = await _repository.GetOrders(buildingObjectId);
+        var orders = await _repository.GetOrders(buildingObjectId, loadConditions);
 
-        return Mapper.Map<IEnumerable<OrderOverview>>(orders);
+        return orders;
     }
 
-    public async Task<IEnumerable<ProviderOverview>> GetProviders(Guid buildingObjectId)
+    public async Task<LoadResult<ProviderOverview>> GetProviders(Guid buildingObjectId, LoadConditions loadConditions)
     {
-        var providers = await _repository.GetProviders(buildingObjectId);
+        var providers = await _repository.GetProviders(buildingObjectId, loadConditions);
 
-        return Mapper.Map<IEnumerable<ProviderOverview>>(providers);
+        return providers;
     }
 
     public async Task<IEnumerable<DictionaryItem>> GetProvidersShortInfos(Guid buildingObjectId)

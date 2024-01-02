@@ -1,4 +1,5 @@
 ﻿using BuildingWorks.Common.Entities;
+using BuildingWorks.Infrastructure.Loading;
 using BuildingWorks.Models.Overviews;
 using BuildingWorks.Models.Overviews.BuildingObjects;
 using BuildingWorks.Models.Overviews.Providers;
@@ -9,10 +10,10 @@ namespace BuildingWorks.Services.Interfaces.BuildingObjects;
 
 public interface IBuildingObjectService : IOverviewService<BuildingObjectResource, BuildingObjectOverview>
 {
-    Task<IEnumerable<ProviderOverview>> GetProviders(Guid buildingObjectId);
-    Task<IEnumerable<BrigadeOverview>> GetBrigades(Guid buildingObjectId);
+    Task<LoadResult<ProviderOverview>> GetProviders(Guid buildingObjectId, LoadConditions loadConditions);
+    Task<LoadResult<BrigadeOverview>> GetBrigades(Guid buildingObjectId, LoadConditions loadConditions);
     Task AddProvider(Guid buildingObjectId, Guid providerId);
     Task DeleteProvider(Guid buildingObjectId, Guid providerId);
-    Task<IEnumerable<OrderOverview>> GetOrders(Guid buildingObjectId);
+    Task<LoadResult<OrderOverview>> GetOrders(Guid buildingObjectId, LoadConditions loadConditions);
     Task<IEnumerable<DictionaryItem>> GetProvidersShortInfos(Guid buildingObjectId);
 }

@@ -1,4 +1,5 @@
-﻿using BuildingWorks.Models.Resources;
+﻿using BuildingWorks.Infrastructure.Loading;
+using BuildingWorks.Models.Resources;
 using BuildingWorks.Repositories.Abstractions;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
@@ -32,9 +33,9 @@ public class OrdersController : ControllerBase
 	}
 
 	[HttpGet("{id}/materials")]
-	public async Task<IActionResult> GetMaterials(Guid id)
+	public async Task<IActionResult> GetMaterials(Guid id, [FromQuery] LoadConditions loadConditions)
 	{
-		var materials = await _repository.GetMaterials(id);
+		var materials = await _repository.GetMaterials(id, loadConditions);
 
 		return Ok(materials);
 	}

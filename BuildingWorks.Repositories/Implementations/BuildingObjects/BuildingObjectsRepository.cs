@@ -4,11 +4,11 @@ using BuildingWorks.Common.Exceptions;
 using BuildingWorks.Infrastructure;
 using BuildingWorks.Infrastructure.Entities;
 using BuildingWorks.Infrastructure.Entities.Joininig;
-using BuildingWorks.Infrastructure.Entities.Providers;
-using BuildingWorks.Infrastructure.Entities.Workers;
 using BuildingWorks.Infrastructure.Loading;
 using BuildingWorks.Models.Overviews;
 using BuildingWorks.Models.Overviews.BuildingObjects;
+using BuildingWorks.Models.Overviews.Providers;
+using BuildingWorks.Models.Overviews.Workers;
 using BuildingWorks.Repositories.Abstractions.BuildingObjects;
 using BuildingWorks.Repositories.Abstractions.Plans;
 using BuildingWorks.Repositories.Abstractions.Workers;
@@ -23,11 +23,11 @@ public class BuildingObjectsRepository : OverviewRepository<BuildingObject, Buil
     private readonly IPlanRepository _plansRepository;
     private readonly IBrigadeRepository _brigadesRepository;
     private readonly IDatabaseChanges _databaseChanges;
-    private readonly ILoader<Brigade> _brigadeLoader;
-    private readonly ILoader<Provider> _providersLoader;
+    private readonly ILoader<BrigadeOverview> _brigadeLoader;
+    private readonly ILoader<ProviderOverview> _providersLoader;
     private readonly ILoader<OrderOverview> _orderLoader;
 
-    public BuildingObjectsRepository(BuildingWorksDbContext context, IPlanRepository plansRepository, IBrigadeRepository brigadesRepository, IDatabaseChanges databaseChanges, ILoader<Brigade> brigadeLoader, ILoader<Provider> providerLoader, ILoader<OrderOverview> orderLoader) : base(context)
+    public BuildingObjectsRepository(BuildingWorksDbContext context, IPlanRepository plansRepository, IBrigadeRepository brigadesRepository, IDatabaseChanges databaseChanges, ILoader<BrigadeOverview> brigadeLoader, ILoader<ProviderOverview> providerLoader, ILoader<OrderOverview> orderLoader) : base(context)
     {
         _plansRepository = plansRepository;
         _brigadesRepository = brigadesRepository;
@@ -71,9 +71,37 @@ public class BuildingObjectsRepository : OverviewRepository<BuildingObject, Buil
         }
     }
 
-    public async Task<LoadResult<Brigade>> GetBrigades(Guid buildingObjectId, LoadConditions loadConditions)
+    public async Task<LoadResult<BrigadeOverview>> GetBrigades(Guid buildingObjectId, LoadConditions loadConditions)
     {
-        var loadQuery = Context.Brigades.Where(brigade => brigade.BuildingObjectId == buildingObjectId);
+        var loadQuery = Context.Brigades
+            .Where(brigade => brigade.BuildingObjectId == buildingObjectId)
+            .Include(brigade => brigade.Brigadier)
+            .Include(brigade => brigade.BuildingObject)
+            .Select(brigade => new BrigadeOverview
+            {
+                Id = brigade.Id,
+                WorkersCount = Context.BrigadeWorker.Count(entity => entity.BrigadesId == brigade.Id),
+                Number = brigade.Number,
+                BuildingObject = new BuildingObjectOverview
+                {
+                    Id = brigade.BuildingObject.Id,
+                    ObjectName = brigade.BuildingObject.ObjectName,
+                    BuildingObjectType = brigade.BuildingObject.BuildingObjectType,
+                    BuildingObjectTypeName = brigade.BuildingObject.BuildingObjectTypeName,
+                    ExecutorCompany = brigade.BuildingObject.ExecutorCompany,
+                    ObjectCustomer = brigade.BuildingObject.ObjectCustomer
+                },
+                Brigadier = brigade.Brigadier == null ? null : new WorkerOverview
+                {
+                    Id = brigade.Brigadier.Id,
+                    FirstName = brigade.Brigadier.FirstName,
+                    LastName = brigade.Brigadier.LastName,
+                    MiddleName = brigade.Brigadier.MiddleName,
+                    Post = brigade.Brigadier.Post,
+                    IsBrigadier = brigade.Brigadier.Brigades.Any(),
+                    StartWorkDate = brigade.Brigadier.StartWorkDate,
+                }
+            });
         var loadedData = await _brigadeLoader.Load(loadQuery, loadConditions);
 
         return loadedData;
@@ -99,12 +127,20 @@ public class BuildingObjectsRepository : OverviewRepository<BuildingObject, Buil
         return result;
     }
 
-    public async Task<LoadResult<Provider>> GetProviders(Guid buildingObjectId, LoadConditions loadConditions)
+    public async Task<LoadResult<ProviderOverview>> GetProviders(Guid buildingObjectId, LoadConditions loadConditions)
     {
         var loadQuery = Context.BuildingObjectProvider.AsNoTracking()
             .Include(provider => provider.Provider)
             .Where(entity => entity.BuildingObjectsId == buildingObjectId)
-            .Select(entity => entity.Provider);
+            .Select(entity => new ProviderOverview
+            {
+                Id = entity.ProvidersId,
+                Name = entity.Provider.Name,
+                Signer = entity.Provider.Signer,
+                AdditionalData = entity.Provider.AdditionalData,
+                Country = entity.Provider.Country
+            });
+
         var loadedData = await _providersLoader.Load(loadQuery, loadConditions);
 
         return loadedData;

@@ -1,4 +1,5 @@
-﻿using BuildingWorks.Models.Overviews.BuildingObjects;
+﻿using BuildingWorks.Infrastructure.Loading;
+using BuildingWorks.Models.Overviews.BuildingObjects;
 using BuildingWorks.Models.Resources.BuildingObjects;
 using BuildingWorks.Services.Interfaces.BuildingObjects;
 using Microsoft.AspNetCore.Mvc;
@@ -17,9 +18,9 @@ public class BuildingObjectController : BuildingWorksOverviewController<Building
     }
 
     [HttpGet("{id}/providers")]
-    public async Task<IActionResult> GetProviders(Guid id)
+    public async Task<IActionResult> GetProviders(Guid id, [FromQuery] LoadConditions loadConditions)
     {
-        var providers = await _service.GetProviders(id);
+        var providers = await _service.GetProviders(id, loadConditions);
 
         return Ok(providers);
     }
@@ -33,17 +34,17 @@ public class BuildingObjectController : BuildingWorksOverviewController<Building
     }
 
     [HttpGet("{id}/brigades")]
-    public async Task<IActionResult> GetBrigades(Guid id)
+    public async Task<IActionResult> GetBrigades(Guid id, [FromQuery] LoadConditions loadConditions)
     {
-        var brigades = await _service.GetBrigades(id);
+        var brigades = await _service.GetBrigades(id, loadConditions);
 
         return Ok(brigades);
     }
 
     [HttpGet("{id}/orders")]
-    public async Task<IActionResult> GetOrders(Guid id)
+    public async Task<IActionResult> GetOrders(Guid id, [FromQuery] LoadConditions loadConditions)
     {
-        var orders = await _service.GetOrders(id);
+        var orders = await _service.GetOrders(id, loadConditions);
 
         return Ok(orders);
     }

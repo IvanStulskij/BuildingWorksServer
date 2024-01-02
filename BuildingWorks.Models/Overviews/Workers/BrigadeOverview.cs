@@ -9,5 +9,5 @@ public class BrigadeOverview : Entity, IOverview
     public int WorkersCount { get; set; }
 
     public BuildingObjectOverview BuildingObject { get; set; } = null!;
-    public WorkerOverview Brigadier { get; set; } = null!;
+    public WorkerOverview? Brigadier { get; set; }
 }
