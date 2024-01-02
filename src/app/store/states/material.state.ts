@@ -1,11 +1,12 @@
+import { LoadResult } from "src/app/types/loader";
 import { Material } from "src/app/types/material";
 
 export interface IMaterialState {
-    materials: Material[];
+    loadResult: LoadResult<Material> | null;
     selectedMaterial: Material | null;
 }
 
 export const initialMaterialState: IMaterialState = {
-    materials: [],
+    loadResult: null,
     selectedMaterial: null
 };

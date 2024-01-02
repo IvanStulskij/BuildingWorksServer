@@ -7,6 +7,7 @@ import { CreatePlan, CreatePlanSuccess, DeletePlan, DeletePlanSuccess, EPlanActi
 import { catchError, map, of, switchMap, withLatestFrom } from "rxjs";
 import { Plan } from "src/app/types/plans";
 import { selectPlanList } from "../selectors/plan.selector";
+import { LoadResult } from "src/app/types/loader";
 
 @Injectable()
 export class PlanEffects {
@@ -40,8 +41,9 @@ export class PlanEffects {
 
     getPlans$ = createEffect(() => this.actions$.pipe(
         ofType<GetPlans>(EPlanActions.GetPlans),
-        switchMap(() => this.service.getAll()),
-        switchMap((plans: Plan[]) => of(new GetPlansSuccess(plans))),
+        map(action => action.payload),
+        switchMap((loadConditions) => this.service.getAll(loadConditions)),
+        switchMap((loadResult: LoadResult<Plan>) => of(new GetPlansSuccess(loadResult))),
         catchError((err, caught$) => {
             console.log(err['message']);
             

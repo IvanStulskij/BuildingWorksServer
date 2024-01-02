@@ -6,7 +6,7 @@ const selectBuildingObjects = (state: IAppState) => state.buildingObjects;
 
 export const selectBuildingObjectList = createSelector(
     selectBuildingObjects,
-    (state: IBuildingObjectState) => state.buildingObjects
+    (state: IBuildingObjectState) => state.loadResult
 );
 
 export const selectBuildingObject = createSelector(

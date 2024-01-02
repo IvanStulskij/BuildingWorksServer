@@ -7,6 +7,7 @@ import { WorkersService } from "src/app/services/workers.service";
 import { CreateWorker, CreateWorkerSuccess, DeleteWorker, DeleteWorkerSuccess, EWorkerActions, GetWorker, GetWorkerSuccess, GetWorkers, GetWorkersSuccess, UpdateWorker, UpdateWorkerSuccess } from "../actions/worker.actions";
 import { Worker } from "src/app/types/workers";
 import { selectWorkerList } from "../selectors/worker.selector";
+import { LoadConditions, LoadResult } from "src/app/types/loader";
 
 @Injectable()
 export class WorkerEffects {
@@ -40,8 +41,9 @@ export class WorkerEffects {
 
     getWorkers$ = createEffect(() => this.actions$.pipe(
         ofType<GetWorkers>(EWorkerActions.GetWorkers),
-        switchMap(() => this.service.getAll()),
-        switchMap((workers: Worker[]) => of(new GetWorkersSuccess(workers))),
+        map(action => action.payload),
+        switchMap((payload: LoadConditions) => this.service.getAll(payload)),
+        switchMap((loadResult: LoadResult<Worker>) => of(new GetWorkersSuccess(loadResult))),
         catchError((err, caught$) => {
             console.log(err['message']);
             

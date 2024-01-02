@@ -10,6 +10,7 @@ import { Provider } from 'src/app/types/providers';
 import { Observable, map } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { selectBuildingObjectProviderList } from 'src/app/store/selectors/building-object-provider.selector';
+import { DefaultItemsPerPage } from 'src/app/constants';
 
 @Component({
   selector: 'app-providers',
@@ -38,7 +39,7 @@ export class ProvidersComponent implements OnInit {
     }
     this.providers$ = this.store.pipe(selector, map(provider => {
       const dataSource = this.dataSource;
-      dataSource.data = provider;
+      dataSource.data = provider?.data!;
       return dataSource;
     }));
   }
@@ -46,7 +47,12 @@ export class ProvidersComponent implements OnInit {
   ngOnInit(): void {
     if (this.id) {
       if (this.isAdd) {
-        this.store.dispatch(new GetProviders())
+        this.store.dispatch(new GetProviders({
+          page: 1,
+          pageSize: DefaultItemsPerPage,
+          filter: null,
+          sorter: null
+        }))
       }
       else {
         if (this.route.url.includes("building-objects")) {
@@ -55,7 +61,12 @@ export class ProvidersComponent implements OnInit {
       }
     }
     else {
-      this.store.dispatch(new GetProviders());
+      this.store.dispatch(new GetProviders({
+        page: 1,
+        pageSize: DefaultItemsPerPage,
+        filter: null,
+        sorter: null
+      }));
     }
   }
 

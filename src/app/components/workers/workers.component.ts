@@ -5,7 +5,8 @@ import { selectWorkerList } from 'src/app/store/selectors/worker.selector';
 import { IAppState } from 'src/app/store/states/app.state';
 import { WorkerCardComponent } from './worker-card/worker-card.component';
 import { DeleteWorker, GetWorkers } from 'src/app/store/actions/worker.actions';
-import { MatTableDataSource } from '@angular/material/table';
+import { DefaultItemsPerPage } from 'src/app/constants';
+import { LoadResult } from 'src/app/types/loader';
 import { Worker } from 'src/app/types/workers';
 
 @Component({
@@ -16,15 +17,24 @@ import { Worker } from 'src/app/types/workers';
 export class WorkersComponent implements OnInit {
   
   displayedColumns: string[] = ['name', 'startWorkDate', 'post'];
-  
-  workers$ = this.store.pipe(select(selectWorkerList));
+  workers!: LoadResult<Worker> | null;
+  //workers$ = this.store.pipe(select(selectWorkerList));
 
   constructor(
     private store: Store<IAppState>,
     private dialog: MatDialog) { }
 
   ngOnInit(): void {
-    this.store.dispatch(new GetWorkers());
+    this.store.dispatch(new GetWorkers({
+      page: 1,
+      pageSize: DefaultItemsPerPage,
+      filter: null,
+      sorter: null
+    }));
+
+    this.store.pipe(select(selectWorkerList)).subscribe(workers => {
+      this.workers = workers;
+    });
   }
 
   navigateToWorker(id: string) : void {

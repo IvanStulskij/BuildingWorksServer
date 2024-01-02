@@ -7,7 +7,7 @@ const selectPlans = (state: IAppState) => state.plans;
 
 export const selectPlanList = createSelector(
     selectPlans,
-    (state: IPlanState) => state.plans
+    (state: IPlanState) => state.loadResult
 );
 
 export const selectPlan = createSelector(

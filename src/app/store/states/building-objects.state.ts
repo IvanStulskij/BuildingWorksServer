@@ -1,11 +1,12 @@
 import { BuildingObject } from "src/app/types/building-objects";
+import { LoadResult } from "src/app/types/loader";
 
 export interface IBuildingObjectState{
-    buildingObjects: BuildingObject[];
+    loadResult: LoadResult<BuildingObject> | null;
     selectedBuildingObject: BuildingObject | null;
 }
 
 export const initialBuildingObjectState: IBuildingObjectState = {
-    buildingObjects: [],
+    loadResult: null,
     selectedBuildingObject: null
 };

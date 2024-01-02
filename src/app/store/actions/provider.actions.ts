@@ -1,5 +1,6 @@
 import { Action } from "@ngrx/store";
 import { BuildingObjectProvider } from "src/app/types/building-objects";
+import { LoadConditions, LoadResult } from "src/app/types/loader";
 import { Provider } from "src/app/types/providers";
 
 export enum EProviderActions {
@@ -34,11 +35,12 @@ export enum EProviderActions {
 
 export class GetProviders implements Action {
     public readonly type = EProviderActions.GetProviders;
+    constructor(public payload: LoadConditions) {}
 }
 
 export class GetProvidersSuccess implements Action {
     public readonly type = EProviderActions.GetProvidersSuccess;
-    constructor(public payload: Provider[]) {}
+    constructor(public payload: LoadResult<Provider>) {}
 }
 
 export class GetProvider implements Action {
@@ -58,7 +60,7 @@ export class GetProvidersByBuildingObject implements Action {
 
 export class GetProvidersByBuildingObjectSuccess implements Action {
     public readonly type = EProviderActions.GetProvidersByBuildingObjectSuccess;
-    constructor(public payload: Provider[]) {}
+    constructor(public payload: LoadResult<Provider>) {}
 }
 
 export class CreateProvider implements Action {

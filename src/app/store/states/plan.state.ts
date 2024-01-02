@@ -1,11 +1,12 @@
+import { LoadResult } from "src/app/types/loader";
 import { Plan } from "src/app/types/plans";
 
 export interface IPlanState {
-    plans: Plan[];
+    loadResult: LoadResult<Plan> | null;
     selectedPlan: Plan | null;
 }
 
 export const initialPlanState: IPlanState = {
-    plans: [],
+    loadResult: null,
     selectedPlan: null
 };

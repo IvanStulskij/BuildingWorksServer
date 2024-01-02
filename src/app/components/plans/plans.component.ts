@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PlansService } from 'src/app/services/plans.service';
+import { LoadResult } from 'src/app/types/loader';
 import { Plan } from 'src/app/types/plans';
 
 @Component({
@@ -13,9 +14,14 @@ export class PlansComponent implements OnInit {
   constructor(private service: PlansService) { }
 
   ngOnInit(): void {
-    this.service.getAll()
-      .subscribe((result: Plan[]) => {
-        this.plans = result
+    this.service.getAll({
+      page: 1,
+      pageSize: 1,
+      filter: null,
+      sorter: null
+    })
+      .subscribe((result: LoadResult<Plan>) => {
+        this.plans = result.data;
       });
   }
 

@@ -1,22 +1,45 @@
 <button mat-button (click)="navigateToCreateWindow()">Create</button>
-
+<mat-select value="Add filter" placeholder="Properties">
+  <mat-option *ngFor="let property of properties!" [value]="property" (click)="addToFilter(property)">{{property}}</mat-option>
+</mat-select>
+<div class="filter-per-definition" *ngFor="let filterDefinition of filterDefinitions">
+  <div class="filter-property">{{filterDefinition.property}}</div>
+  <input matInput [(ngModel)]="filterDefinition.value" placeholder="Value">
+  <button mat-button (click)="removeFilterDefinition(filterDefinition.property)"><mat-icon>restore_from_trash</mat-icon></button>
+</div>
+<button mat-button (click)="applyFilter()">Filter</button>
+<button *ngIf="currentPage > 1" (click)="navigatePreviousPage()" class="navigation-icon">
+  <mat-icon>arrow_left_alt</mat-icon>
+</button>
+<button class="navigation-icon" (click)="navigateNextPage()">
+  <mat-icon>arrow_right_alt</mat-icon>
+</button>
 <table mat-table [dataSource]="(buildingObjects$ | async) ?? []" class="mat-elevation-z8">
 
   <!-- Position Column -->
   <ng-container matColumnDef="objectName">
-    <th mat-header-cell *matHeaderCellDef> Object Name </th>
+    <th mat-header-cell *matHeaderCellDef (click)="applySorting('objectName')" (contextmenu)="clearSorting('objectName')"> Object Name
+      <mat-icon *ngIf="filterProperty == 'objectName' && !sortAsc">arrow_downward</mat-icon>
+      <mat-icon *ngIf="filterProperty == 'objectName' && sortAsc">arrow_upward</mat-icon>
+    </th>
     <td mat-cell *matCellDef="let element"> {{element.objectName}} </td>
   </ng-container>
 
   <!-- Name Column -->
   <ng-container matColumnDef="objectCustomer">
-    <th mat-header-cell *matHeaderCellDef> Customer </th>
+    <th mat-header-cell *matHeaderCellDef (click)="applySorting('objectCustomer')" (contextmenu)="clearSorting('objectCustomer')"> Customer 
+      <mat-icon *ngIf="filterProperty == 'objectCustomer' && !sortAsc">arrow_downward</mat-icon>
+      <mat-icon *ngIf="filterProperty == 'objectCustomer' && sortAsc">arrow_upward</mat-icon>
+    </th>
     <td mat-cell *matCellDef="let element"> {{element.objectCustomer}} </td>
   </ng-container>
 
   <!-- Weight Column -->
   <ng-container matColumnDef="executorCompany">
-    <th mat-header-cell *matHeaderCellDef> Executor company </th>
+    <th mat-header-cell *matHeaderCellDef (click)="applySorting('executorCompany')" (contextmenu)="clearSorting('executorCompany')"> Executor company
+      <mat-icon *ngIf="filterProperty == 'executorCompany' && !sortAsc">arrow_downward</mat-icon>
+      <mat-icon *ngIf="filterProperty == 'executorCompany' && sortAsc">arrow_upward</mat-icon>
+    </th>
     <td mat-cell *matCellDef="let element"> {{element.executorCompany}} </td>
   </ng-container>
 

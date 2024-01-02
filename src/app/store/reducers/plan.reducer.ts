@@ -9,7 +9,7 @@ export const planReducer = (
         case EPlanActions.GetPlansSuccess: {
             return {
                 ...state,
-                plans: action.payload
+                loadResult: action.payload
             }
         }
         case EPlanActions.GetPlanSuccess: {
@@ -19,30 +19,30 @@ export const planReducer = (
             }
         }
         case EPlanActions.CreatePlanSuccess: {
-            state.plans.push(action.payload);
+            state.loadResult?.data.push(action.payload);
 
             return {
                 ...state,
-                plans: state.plans
+                loadResult: state.loadResult
             }
         }
         case EPlanActions.UpdatePlanSuccess: {
-            let planIndex = state.plans.indexOf(state.plans.filter(plan => plan.id == action.payload.id)[0]);
+            let planIndex = state.loadResult?.data.indexOf(state.loadResult.data.filter(plan => plan.id == action.payload.id)[0]);
             
-            state.plans[planIndex] = action.payload;
-            
+            state.loadResult!.data[planIndex!] = action.payload;
 
             return {
                 ...state,
-                plans: state.plans
+                loadResult: state.loadResult
             }
         }
         case EPlanActions.DeletePlan: {
-            let plans = state.plans.filter(plan => plan.id != action.payload);
+            let plans = state.loadResult?.data.filter(plan => plan.id != action.payload);
+            state.loadResult!.data = plans!;
 
             return {
                 ...state,
-                plans: plans
+                loadResult: state.loadResult
             }
         }
         default: {

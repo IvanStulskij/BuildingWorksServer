@@ -1,5 +1,7 @@
+import { LoadResult } from "src/app/types/loader";
 import { EProviderActions, ProviderActions } from "../actions/provider.actions";
 import { IProviderState, initialProviderState } from "../states/provider.state";
+import { Provider } from "src/app/types/providers";
 
 export const providerReducer = (
     state = initialProviderState,
@@ -9,7 +11,7 @@ export const providerReducer = (
         case EProviderActions.GetProvidersSuccess: {
             return {
                 ...state,
-                providers: action.payload
+                loadResult: action.payload
             }
         }
         case EProviderActions.GetProviderSuccess: {
@@ -21,41 +23,48 @@ export const providerReducer = (
         case EProviderActions.GetProvidersByBuildingObjectSuccess: {
             return {
                 ...state,
-                providers: action.payload
+                loadResult: action.payload
             }
         }
         case EProviderActions.CreateProviderSuccess: {
-            let providers = state.providers;
+            let providers = state.loadResult!.data;
             providers.push(action.payload);
+            let loadResult: LoadResult<Provider> = {
+                data: providers,
+                totalCount: providers.length
+            };
 
             return {
                 ...state,
-                providers: providers
+                loadResult: loadResult
             }
         }
         case EProviderActions.AddProviderToBuildingObjectSuccess: {
             return {
                 ...state,
-                providers: state.providers
+                loadResult: state.loadResult
             }
         }
         case EProviderActions.UpdateProviderSuccess: {
-            let providerIndex = state.providers.indexOf(state.providers.filter(provider => provider.id == action.payload.id)[0]);
+            let providerIndex = state.loadResult!.data.indexOf(state.loadResult!.data.filter(provider => provider.id == action.payload.id)[0]);
             
-            state.providers[providerIndex] = action.payload;
+            state.loadResult!.data[providerIndex] = action.payload;
             
-
             return {
                 ...state,
-                providers: state.providers
+                loadResult: state.loadResult
             }
         }
         case EProviderActions.DeleteProvider: {
-            let providers = state.providers.filter(provider => provider.id != action.payload);
+            let providers = state.loadResult!.data.filter(provider => provider.id != action.payload);
+            let loadResult: LoadResult<Provider> = {
+                data: providers,
+                totalCount: providers.length
+            };
 
             return {
                 ...state,
-                providers: providers
+                loadResult: loadResult
             }
         }
         default: {

@@ -1,4 +1,5 @@
 import { Action } from "@ngrx/store";
+import { LoadConditions, LoadResult } from "src/app/types/loader";
 import { Plan } from "src/app/types/plans";
 
 export enum EPlanActions {
@@ -25,11 +26,12 @@ export enum EPlanActions {
 
 export class GetPlans implements Action {
     public readonly type = EPlanActions.GetPlans;
+    constructor(public payload: LoadConditions) {}
 }
 
 export class GetPlansSuccess implements Action {
     public readonly type = EPlanActions.GetPlansSuccess;
-    constructor(public payload: Plan[]) {}
+    constructor(public payload: LoadResult<Plan>) {}
 }
 
 export class GetPlan implements Action {

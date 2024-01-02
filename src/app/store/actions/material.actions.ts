@@ -1,4 +1,5 @@
 import { Action } from "@ngrx/store";
+import { LoadConditions, LoadResult } from "src/app/types/loader";
 import { Material, MaterialContract, MaterialProvider } from "src/app/types/material";
 
 export enum EMaterialActions {
@@ -41,11 +42,12 @@ export enum EMaterialActions {
 
 export class GetMaterials implements Action {
     public readonly type = EMaterialActions.GetMaterials;
+    constructor(public payload: LoadConditions) {}
 }
 
 export class GetMaterialsSuccess implements Action {
     public readonly type = EMaterialActions.GetMaterialsSuccess;
-    constructor(public payload: Material[]) {}
+    constructor(public payload: LoadResult<Material>) {}
 }
 
 export class GetMaterialsByOrder implements Action {
@@ -55,7 +57,7 @@ export class GetMaterialsByOrder implements Action {
 
 export class GetMaterialsByOrderSuccess implements Action {
     public readonly type = EMaterialActions.GetMaterialsByOrderSuccess;
-    constructor(public payload: Material[]) {}
+    constructor(public payload: LoadResult<Material>) {}
 }
 
 export class GetMaterialsByProvider implements Action {
@@ -65,7 +67,7 @@ export class GetMaterialsByProvider implements Action {
 
 export class GetMaterialsByProviderSuccess implements Action {
     public readonly type = EMaterialActions.GetMaterialsByProviderSuccess;
-    constructor(public payload: Material[]) {} 
+    constructor(public payload: LoadResult<Material>) {} 
 }
 
 export class GetMaterial implements Action {

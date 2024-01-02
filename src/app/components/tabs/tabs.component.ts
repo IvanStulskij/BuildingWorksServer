@@ -11,7 +11,4 @@ export class TabsComponent {
   constructor() {
     
   }
-  log() {
-    console.log(123)
-  }
 }

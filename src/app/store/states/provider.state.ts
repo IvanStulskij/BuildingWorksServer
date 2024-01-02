@@ -1,11 +1,12 @@
+import { LoadResult } from "src/app/types/loader";
 import { Provider } from "src/app/types/providers";
 
 export interface IProviderState {
-    providers: Provider[];
+    loadResult: LoadResult<Provider> | null;
     selectedProvider: Provider | null;
 }
 
 export const initialProviderState: IProviderState = {
-    providers: [],
+    loadResult: null,
     selectedProvider: null
 };

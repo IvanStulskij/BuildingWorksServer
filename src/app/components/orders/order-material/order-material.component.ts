@@ -35,7 +35,7 @@ export class OrderMaterialComponent implements OnInit {
     this.store.dispatch(new GetMaterialsByProvider(this.data.providerId));
 
     this.materials$.subscribe(materials => {
-      this.materials = materials;  
+      this.materials = materials?.data!;  
     });
   }
 

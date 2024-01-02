@@ -1,5 +1,7 @@
+import { LoadResult } from "src/app/types/loader";
 import { EMaterialActions, MaterialActions } from "../actions/material.actions";
 import { IMaterialState, initialMaterialState } from "../states/material.state";
+import { Material } from "src/app/types/material";
 
 export const materialReducer = (
     state = initialMaterialState,
@@ -9,7 +11,7 @@ export const materialReducer = (
         case EMaterialActions.GetMaterialsSuccess: {
             return {
                 ...state,
-                materials: action.payload
+                loadResult: action.payload
             }
         }
         case EMaterialActions.GetMaterialSuccess: {
@@ -19,27 +21,30 @@ export const materialReducer = (
             }
         }
         case EMaterialActions.CreateMaterialSuccess: {
-            let materials = state.materials;
+            let materials = state.loadResult!.data;
             materials.push(action.payload);
-
+            let loadResult: LoadResult<Material> = {
+                data: materials,
+                totalCount: materials.length
+            };
             return {
                 ...state,
-                materials: materials
+                loadResult: loadResult
             }
         }
         case EMaterialActions.UpdateMaterialSuccess: {
-            let materialIndex = state.materials.indexOf(state.materials.filter(material => material.id == action.payload.id)[0]);
-            state.materials[materialIndex] = action.payload;
+            let materialIndex = state.loadResult?.data.indexOf(state.loadResult.data.filter(material => material.id == action.payload.id)[0]);
+            //state.loadResult?.data[materialIndex] = action.payload;
             
             return {
                 ...state,
-                materials: state.materials
+                loadResult: state.loadResult
             }
         }
         case EMaterialActions.DeleteMaterialSuccess: {
             return {
                 ...state,
-                materials: state.materials
+                loadResult: state.loadResult
             }
         }
         default: {

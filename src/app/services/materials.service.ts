@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { Service } from './service';
 import { Material, MaterialContract, MaterialProvider } from '../types/material';
 import { HttpClient } from '@angular/common/http';
-import { contractsUrl, materialsUrl, ordersUrl, providersUrl } from '../constants';
+import { materialsUrl, ordersUrl, providersUrl } from '../constants';
 import { Observable } from 'rxjs';
+import { LoadResult } from '../types/loader';
 
 @Injectable({
   providedIn: 'root'
@@ -14,10 +15,10 @@ export class MaterialsService extends Service<Material> {
     super(httpClient, materialsUrl);
   }
 
-  getByProvider(providerId: string) : Observable<Material[]> {
+  getByProvider(providerId: string) : Observable<LoadResult<Material>> {
     const url = `${providersUrl}/${providerId}/materials`;
     
-    return this.httpClient.get<Material[]>(url);
+    return this.httpClient.get<LoadResult<Material>>(url);
   }
 
   addToProvider(materialProvider: MaterialProvider) : void {
@@ -32,9 +33,9 @@ export class MaterialsService extends Service<Material> {
     this.httpClient.delete(url).subscribe();
   }
 
-  getByOrder(orderId: string) : Observable<Material[]> {
+  getByOrder(orderId: string) : Observable<LoadResult<Material>> {
     const url = `${ordersUrl}/${orderId}/materials`;
     
-    return this.httpClient.get<Material[]>(url);
+    return this.httpClient.get<LoadResult<Material>>(url);
   }
 }

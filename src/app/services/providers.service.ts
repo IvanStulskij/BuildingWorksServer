@@ -6,6 +6,7 @@ import { buildingObjectsUrl, contractsUrl, providersUrl } from '../constants';
 import { Observable } from 'rxjs';
 import { DictionaryItem } from '../types/common';
 import { BuildingObjectProvider } from '../types/building-objects';
+import { LoadResult } from '../types/loader';
 
 @Injectable({
   providedIn: 'root'
@@ -16,10 +17,10 @@ export class ProvidersService extends Service<Provider> {
     super(httpClient, providersUrl);
   }
 
-  getProvidersByBuildingObject(buildingObjectId: string) : Observable<Provider[]> {
+  getProvidersByBuildingObject(buildingObjectId: string) : Observable<LoadResult<Provider>> {
     const url = `${buildingObjectsUrl}/${buildingObjectId}/providers`;
 
-    return this.httpClient.get<Provider[]>(url);
+    return this.httpClient.get<LoadResult<Provider>>(url);
   }
 
   getProvidersShortInfosByBuildingObject(buildingObjectId: string) : Observable<DictionaryItem[]> {

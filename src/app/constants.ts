@@ -8,4 +8,6 @@ export const plansUrl = `${baseUrl}/Plan`;
 export const providersUrl = `${baseUrl}/Provider`;
 export const workerSalariesUrl = `${baseUrl}/WorkerSalary`;
 export const workersUrl = `${baseUrl}/Worker`;
-export const ordersUrl = `${baseUrl}/Orders`
+export const ordersUrl = `${baseUrl}/Orders`;
+
+export const DefaultItemsPerPage = 10;

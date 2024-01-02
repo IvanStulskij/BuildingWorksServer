@@ -1,5 +1,6 @@
 import { Action } from '@ngrx/store';
 import { BuildingObject } from 'src/app/types/building-objects';
+import { LoadConditions, LoadResult } from 'src/app/types/loader';
 
 export enum EBuildingObjectActions {
     GetBuildingObjects = '[Building Object] Get Building Objects',
@@ -25,11 +26,12 @@ export enum EBuildingObjectActions {
 
 export class GetBuildingObjects implements Action {
     public readonly type = EBuildingObjectActions.GetBuildingObjects;
+    constructor(public payload: LoadConditions) {}
 }
 
 export class GetBuildingObjectsSuccess implements Action {
     public readonly type = EBuildingObjectActions.GetBuildingObjectsSuccess;
-    constructor(public payload: BuildingObject[]) {}
+    constructor(public payload: LoadResult<BuildingObject>) {}
 }
 
 export class GetBuildingObject implements Action {

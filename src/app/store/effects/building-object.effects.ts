@@ -9,6 +9,7 @@ import { select } from "@ngrx/store";
 import { of } from "rxjs";
 import { BuildingObject } from "src/app/types/building-objects";
 import { selectBuildingObjectList } from "../selectors/building-object.selector";
+import { LoadResult } from "src/app/types/loader";
 
 @Injectable()
 export class BuildingObjectEffects {
@@ -42,9 +43,11 @@ export class BuildingObjectEffects {
 
     getBuildingObjects$ = createEffect(() => this.actions$.pipe(
         ofType<GetBuildingObjects>(EBuildingObjectActions.GetBuildingObjects),
-        switchMap(() => this.service.getAll()),
-        switchMap((buildingObjects: BuildingObject[]) => of(new GetBuildingObjectsSuccess(buildingObjects))),
+        map(action => action.payload),
+        switchMap((loadConditions) => this.service.getAll(loadConditions)),
+        switchMap((loadResult: LoadResult<BuildingObject>) => of(new GetBuildingObjectsSuccess(loadResult))),
         catchError((err, caught$) => {
+            console.log(err)
             console.log(err['message']);
             
             return caught$;

@@ -7,7 +7,7 @@ const selectMaterials = (state: IAppState) => state.materials;
 
 export const selectMaterialList = createSelector(
     selectMaterials,
-    (state: IMaterialState) => state.materials
+    (state: IMaterialState) => state.loadResult
 );
 
 export const selectMaterial = createSelector(

@@ -7,7 +7,7 @@ const selectProviders = (state: IAppState) => state.providers;
 
 export const selectProviderList = createSelector(
     selectProviders,
-    (state: IProviderState) => state.providers
+    (state: IProviderState) => state.loadResult
 );
 
 export const selectProvider = createSelector(

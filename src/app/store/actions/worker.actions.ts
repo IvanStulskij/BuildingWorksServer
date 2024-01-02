@@ -1,4 +1,5 @@
 import { Action } from "@ngrx/store";
+import { LoadConditions, LoadResult } from "src/app/types/loader";
 import { Worker } from "src/app/types/workers";
 
 export enum EWorkerActions {
@@ -25,11 +26,12 @@ export enum EWorkerActions {
 
 export class GetWorkers implements Action {
     public readonly type = EWorkerActions.GetWorkers;
+    constructor(public payload: LoadConditions) {}
 }
 
 export class GetWorkersSuccess implements Action {
     public readonly type = EWorkerActions.GetWorkersSuccess;
-    constructor(public payload: Worker[]) {}
+    constructor(public payload: LoadResult<Worker>) {}
 }
 
 export class GetWorker implements Action {

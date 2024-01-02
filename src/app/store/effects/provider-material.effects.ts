@@ -7,13 +7,14 @@ import { of } from "rxjs";
 import { AddMaterialToProvider, AddMaterialToProviderSuccess, EMaterialActions, GetMaterialsByProvider, GetMaterialsByProviderSuccess } from "../actions/material.actions";
 import { Material } from "src/app/types/material";
 import { MaterialsService } from "src/app/services/materials.service";
+import { LoadResult } from "src/app/types/loader";
 
 @Injectable()
 export class ProviderMaterialEffects {
     getProviderMaterials$ = createEffect(() => this.actions$.pipe(
         ofType<GetMaterialsByProvider>(EMaterialActions.GetMaterialsByProvider),
         switchMap((getInfo) => this.service.getByProvider(getInfo.payload)),
-        switchMap((materials: Material[]) => of(new GetMaterialsByProviderSuccess(materials))),
+        switchMap((materials: LoadResult<Material>) => of(new GetMaterialsByProviderSuccess(materials))),
         catchError((err, caught$) => {
             console.log(err['message']);
             

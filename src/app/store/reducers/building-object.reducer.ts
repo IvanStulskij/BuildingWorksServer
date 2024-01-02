@@ -10,7 +10,7 @@ export const buildingObjectReducer = (
         case EBuildingObjectActions.GetBuildingObjectsSuccess: {
             return {
                 ...state,
-                buildingObjects: action.payload
+                loadResult: action.payload
             }
         }
         case EBuildingObjectActions.GetBuildingObjectSuccess: {
@@ -20,29 +20,30 @@ export const buildingObjectReducer = (
             }
         }
         case EBuildingObjectActions.CreateBuildingObjectSuccess: {
-            state.buildingObjects.push(action.payload);
+            state.loadResult!.data.push(action.payload);
 
             return {
                 ...state,
-                buildingObjects: state.buildingObjects
+                loadResult: state.loadResult
             }
         }
         case EBuildingObjectActions.UpdateBuildingObjectSuccess: {
-            let buildingObjectIndex = state.buildingObjects.indexOf(state.buildingObjects.filter(buildingObject => buildingObject.id == action.payload.id)[0]);
+            let buildingObjectIndex = state.loadResult!.data.indexOf(state.loadResult!.data.filter(buildingObject => buildingObject.id == action.payload.id)[0]);
 
-            state.buildingObjects[buildingObjectIndex] = action.payload;
+            state.loadResult!.data[buildingObjectIndex] = action.payload;
             
             return {
                 ...state,
-                buildingObjects: state.buildingObjects
+                loadResult: state.loadResult
             }
         }
         case EBuildingObjectActions.DeleteBuildingObject: {
-            let buildingObjects = state.buildingObjects.filter(buildingObject => buildingObject.id != action.payload);
+            let buildingObjects = state.loadResult!.data.filter(buildingObject => buildingObject.id != action.payload);
+            state.loadResult!.data = buildingObjects;
 
             return {
                 ...state,
-                buildingObjects: buildingObjects
+                loadResult: state.loadResult
             }
         }
         default: {

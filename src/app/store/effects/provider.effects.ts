@@ -8,6 +8,7 @@ import { ProvidersService } from "src/app/services/providers.service";
 import { Provider } from "src/app/types/providers";
 import { selectProviderList } from "../selectors/provider.selector";
 import { NotifierService } from "angular-notifier";
+import { LoadResult } from "src/app/types/loader";
 
 @Injectable()
 export class ProviderEffects {
@@ -44,7 +45,7 @@ export class ProviderEffects {
         ofType<GetProvidersByBuildingObject>(EProviderActions.GetProvidersByBuildingObject),
         map(action => action.payload),
         switchMap((id) => this.service.getProvidersByBuildingObject(id)),
-        switchMap((providers: Provider[]) => of(new GetProvidersByBuildingObjectSuccess(providers)))
+        switchMap((providers: LoadResult<Provider>) => of(new GetProvidersByBuildingObjectSuccess(providers)))
     ));
 
     deleteProvider$ = createEffect(() => this.actions$.pipe(
@@ -67,8 +68,9 @@ export class ProviderEffects {
 
     getProviders$ = createEffect(() => this.actions$.pipe(
         ofType<GetProviders>(EProviderActions.GetProviders),
-        switchMap(() => this.service.getAll()),
-        switchMap((plans: Provider[]) => of(new GetProvidersSuccess(plans))),
+        map(action => action.payload),
+        switchMap((loadConditions) => this.service.getAll(loadConditions)),
+        switchMap((providers: LoadResult<Provider>) => of(new GetProvidersSuccess(providers))),
         catchError((err, caught$) => {
             this.notificationService.notify("error", err['message']);
             

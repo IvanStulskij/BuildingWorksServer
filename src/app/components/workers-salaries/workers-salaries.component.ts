@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { DefaultItemsPerPage } from 'src/app/constants';
 import { WorkersSalariesService } from 'src/app/services/workers-salaries.service';
+import { LoadResult } from 'src/app/types/loader';
 import { WorkerSalary } from 'src/app/types/workers-salaries';
 
 @Component({
@@ -13,9 +15,14 @@ export class WorkersSalariesComponent implements OnInit {
   constructor(private service: WorkersSalariesService) { }
 
   ngOnInit(): void {
-    this.service.getAll()
-      .subscribe((result: WorkerSalary[]) => {
-        this.workersSalaries = result
+    this.service.getAll({
+      page: 1,
+      pageSize: DefaultItemsPerPage,
+      filter: null,
+      sorter: null
+    })
+      .subscribe((result: LoadResult<WorkerSalary>) => {
+        this.workersSalaries = result.data;
       });
   }
 }

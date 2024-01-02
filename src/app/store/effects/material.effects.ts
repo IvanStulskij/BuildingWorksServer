@@ -7,6 +7,7 @@ import { CreateMaterial, CreateMaterialSuccess, DeleteMaterial, DeleteMaterialSu
 import { Material } from "src/app/types/material";
 import { MaterialsService } from "src/app/services/materials.service";
 import { selectMaterialList } from "../selectors/material.selector";
+import { LoadResult } from "src/app/types/loader";
 
 @Injectable()
 export class MaterialEffects {
@@ -40,8 +41,9 @@ export class MaterialEffects {
 
     getMaterials$ = createEffect(() => this.actions$.pipe(
         ofType<GetMaterials>(EMaterialActions.GetMaterials),
-        switchMap(() => this.service.getAll()),
-        switchMap((materials: Material[]) => of(new GetMaterialsSuccess(materials))),
+        map(action => action.payload),
+        switchMap((loadConditions) => this.service.getAll(loadConditions)),
+        switchMap((materials: LoadResult<Material>) => of(new GetMaterialsSuccess(materials))),
         catchError((err, caught$) => {
             console.log(err['message']);
             

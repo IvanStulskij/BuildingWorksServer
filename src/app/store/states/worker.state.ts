@@ -1,11 +1,12 @@
+import { LoadResult } from "src/app/types/loader";
 import { Worker } from "src/app/types/workers";
 
 export interface IWorkerState {
-    workers: Worker[];
+    loadResult: LoadResult<Worker> | null;
     selectedWorker: Worker | null;
 }
 
 export const initialWorkerState: IWorkerState = {
-    workers: [],
+    loadResult: null,
     selectedWorker: null
 };

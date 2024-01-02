@@ -7,7 +7,7 @@ const selectWorkers = (state: IAppState) => state.workers;
 
 export const selectWorkerList = createSelector(
     selectWorkers,
-    (state: IWorkerState) => state.workers
+    (state: IWorkerState) => state.loadResult
 );
 
 export const selectWorker = createSelector(

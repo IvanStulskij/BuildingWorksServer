@@ -11,6 +11,7 @@ import { Material } from 'src/app/types/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { selectProviderMaterialList } from 'src/app/store/selectors/provider-material.selector';
 import { selectOrderMaterialList } from 'src/app/store/selectors/order-material.selector';
+import { DefaultItemsPerPage } from 'src/app/constants';
 
 @Component({
   selector: 'app-materials',
@@ -46,7 +47,7 @@ export class MaterialsComponent implements OnInit {
     }
     this.materials$ = this.store.pipe(selector, map(material => {
       const dataSource = this.dataSource;
-      dataSource.data = material;
+      dataSource.data = material?.data!;
       return dataSource;
     }));
 
@@ -57,7 +58,12 @@ export class MaterialsComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.isAdd) {
-      this.store.dispatch(new GetMaterials());
+      this.store.dispatch(new GetMaterials({
+        page: 1,
+        pageSize: DefaultItemsPerPage,
+        filter: null,
+        sorter: null
+      }));
     }
     else {
       if (this.providerId) {

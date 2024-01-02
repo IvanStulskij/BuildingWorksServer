@@ -1,5 +1,7 @@
+import { LoadResult } from "src/app/types/loader";
 import { EWorkerActions, WorkerActions } from "../actions/worker.actions";
 import { IWorkerState, initialWorkerState } from "../states/worker.state";
+import { Worker } from "src/app/types/workers";
 
 export const workerReducer = (
     state = initialWorkerState,
@@ -9,7 +11,7 @@ export const workerReducer = (
         case EWorkerActions.GetWorkersSuccess: {
             return {
                 ...state,
-                workers: action.payload
+                loadResult: action.payload
             }
         }
         case EWorkerActions.GetWorkerSuccess: {
@@ -19,30 +21,32 @@ export const workerReducer = (
             }
         }
         case EWorkerActions.CreateWorkerSuccess: {
-            state.workers.push(action.payload);
+            state.loadResult!.data.push(action.payload);
 
             return {
                 ...state,
-                workers: state.workers
+                loadResult: state.loadResult
             }
         }
         case EWorkerActions.UpdateWorkerSuccess: {
-            let workerIndex = state.workers.indexOf(state.workers.filter(worker => worker.id == action.payload.id)[0]);
+            let workerIndex = state.loadResult!.data.indexOf(state.loadResult?.data.filter(worker => worker.id == action.payload.id)[0]!);
 
-            state.workers[workerIndex] = action.payload;
-            
+            state.loadResult!.data[workerIndex] = action.payload;
 
             return {
                 ...state,
-                workers: state.workers
+                loadResult: state.loadResult
             }
         }
         case EWorkerActions.DeleteWorker: {
-            let workers = state.workers.filter(worker => worker.id != action.payload);
-
+            let workers = state.loadResult!.data.filter(worker => worker.id != action.payload);
+            let loadResult: LoadResult<Worker> = {
+                data: workers,
+                totalCount: workers.length
+            };
             return {
                 ...state,
-                workers: workers
+                loadResult: loadResult
             }
         }
         default: {
