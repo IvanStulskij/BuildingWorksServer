@@ -41,12 +41,14 @@ public class Sorter<TEntity> : ISorter<TEntity>
                 throw new EntityNotExistException($"Property {sortDefinition.Field} not exist in table ${typeof(TEntity).Name}");
             }
 
+            var property = Properties.FirstOrDefault(property => property.Equals(sortDefinition.Field, StringComparison.OrdinalIgnoreCase));
+
             if (string.IsNullOrWhiteSpace(sortDefinition.Order))
             {
                 sortDefinition.Order = "asc";
             }
 
-            sortString = sortString.Append($" {sortDefinition.Field} {sortDefinition.Order}");
+            sortString = sortString.Append($" \"{property}\" {sortDefinition.Order}");
             sortIndex++;
 
             if (sortIndex != sortDefinitions.Count())

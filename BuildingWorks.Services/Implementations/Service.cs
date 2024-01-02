@@ -71,7 +71,7 @@ public abstract class OverviewService<T, TResource, TOverview> : Service<T, TRes
         OverviewRepository = repository;
     }
 
-    public virtual async Task<IEnumerable<TOverview>> GetAllOverview(LoadConditions loadConditions)
+    public virtual async Task<LoadResult<TOverview>> GetAllOverview(LoadConditions loadConditions)
     {
         var loadedData = await OverviewRepository.GetOverviewDisplayedData(loadConditions);
         return loadedData; 

@@ -1,5 +1,6 @@
 ﻿using BuildingWorks.Common.Entities;
 using BuildingWorks.Repositories.Loading;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
@@ -7,7 +8,7 @@ namespace BuildingWorks.Infrastructure.Loading;
 
 public interface ILoader<TEntity> where TEntity : Entity
 {
-    Task<IEnumerable<TEntity>> Load(IQueryable<TEntity> entities, LoadConditions loadConditions);
+    Task<LoadResult<TEntity>> Load(IQueryable<TEntity> entities, LoadConditions loadConditions);
 }
 
 public class Loader<TEntity> : ILoader<TEntity>
@@ -26,13 +27,19 @@ public class Loader<TEntity> : ILoader<TEntity>
         _sorter = sorter;
     }
 
-    public async Task<IEnumerable<TEntity>> Load(IQueryable<TEntity> entities, LoadConditions loadConditions)
+    public async Task<LoadResult<TEntity>> Load(IQueryable<TEntity> entities, LoadConditions loadConditions)
     {
         var loadSql = GetLoadSQL(loadConditions);
         var jsonExpression = BuildJson(entities.ToQueryString());
         var loadedJson = $"[{string.Join(",", await _context.Database.SqlQueryRaw<string>($"{jsonExpression} {loadSql}").ToListAsync())}]";
+        var data = JsonConvert.DeserializeObject<IEnumerable<TEntity>>(loadedJson);
+        var count = data.Count();
 
-        return JsonConvert.DeserializeObject<IEnumerable<TEntity>>(loadedJson);
+        return new LoadResult<TEntity>
+        {
+            Data = data,
+            TotalCount = count,
+        };
     }
 
     private string BuildJson(string valueSql)
@@ -57,7 +64,14 @@ public class Loader<TEntity> : ILoader<TEntity>
 public class LoadConditions
 {
     public IList<string> Filter { get; set; } = new List<string>();
+    [FromQuery(Name = "Sorter")]
     public IList<SortDefinition> Sorter { get; set; } = new List<SortDefinition>();
     public int? Page { get; set; }
     public int? PageSize { get; set; }
+}
+
+public class LoadResult<T>
+{
+    public IEnumerable<T> Data { get; set; }
+    public int TotalCount { get; set; }
 }

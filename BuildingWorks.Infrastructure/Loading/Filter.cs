@@ -1,5 +1,6 @@
 ﻿using BuildingWorks.Common.Entities;
 using BuildingWorks.Common.Exceptions;
+using BuildingWorks.Infrastructure.Loading;
 using Microsoft.EntityFrameworkCore;
 using System.Text;
 
@@ -42,15 +43,16 @@ public class Filter<TEntity> : IFilter<TEntity>
 
         foreach (var filterProperty in filterProperties)
         {
-            if (!Properties.Contains(filterProperty))
+            if (!Properties.Contains(filterProperty, new StringCaseInsensetiveEqualityComparer()))
             {
                 throw new EntityNotExistException($"Property {filterProperty} not exist in table ${typeof(TEntity).Name}");
             }
 
             var filterComparor = filterComparors.ElementAt(filterIndex);
             var filterValue = filterValues.ElementAt(filterIndex);
+            var property = Properties.FirstOrDefault(property => property.Equals(filterProperty, StringComparison.OrdinalIgnoreCase));
 
-            filterString = filterString.Append($"\"{filterProperty}\" {filterComparor} '{filterValue}'");
+            filterString = filterString.Append($"\"{property}\" {filterComparor} '{filterValue}'");
 
             filterIndex++;
 

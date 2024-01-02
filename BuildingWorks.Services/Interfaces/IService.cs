@@ -22,5 +22,5 @@ public interface IOverviewService<TResource, TOverview> : IService<TResource>
         where TResource : IResource
         where TOverview : IOverview
 {
-    Task<IEnumerable<TOverview>> GetAllOverview(LoadConditions loadConditions);
+    Task<LoadResult<TOverview>> GetAllOverview(LoadConditions loadConditions);
 }
