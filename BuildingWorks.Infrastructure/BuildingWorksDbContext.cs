@@ -11,6 +11,7 @@ public class BuildingWorksDbContext : DbContext
 {
     public virtual DbSet<BuildingObject> BuildingObjects { get; set; } = null!;
     public virtual DbSet<Provider> Providers { get; set; } = null!;
+    public virtual DbSet<Brigade> Brigades { get; set; } = null!;
     public virtual DbSet<Material> Materials { get; set; } = null!;
     public virtual DbSet<Worker> Workers { get; set; } = null!;
     public virtual DbSet<WorkerSalary> WorkerSalaries { get; set; } = null!;

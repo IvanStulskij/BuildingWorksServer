@@ -1,4 +1,5 @@
 ﻿using BuildingWorks.Common.Entities;
+using BuildingWorks.Infrastructure.Loading;
 using BuildingWorks.Models.Resources;
 using BuildingWorks.Models.Resources.Providers;
 
@@ -8,7 +9,7 @@ public interface IOrdersRepository
 {
     Task Add(OrderResource order);
     Task SetAsDelivered(Guid orderId);
-    Task<IEnumerable<OrderMaterialResult>> GetMaterials(Guid orderId);
+    Task<LoadResult<OrderMaterialResult>> GetMaterials(Guid orderId, LoadConditions loadConditions);
     Task SendOrderLink(Guid orderId);
     Task<bool> ApproveByProvider(Guid id);
     Task<IEnumerable<DictionaryItem>> GetMaterialsToAddToOrder(Guid providerId, Guid orderId);

@@ -4,6 +4,7 @@ using BuildingWorks.Common.Exceptions;
 using BuildingWorks.Infrastructure;
 using BuildingWorks.Infrastructure.Entities;
 using BuildingWorks.Infrastructure.Entities.Joininig;
+using BuildingWorks.Infrastructure.Loading;
 using BuildingWorks.Models.Resources;
 using BuildingWorks.Models.Resources.Providers;
 using BuildingWorks.Repositories.Abstractions;
@@ -17,12 +18,14 @@ public class OrdersRepository : IOrdersRepository
     private readonly IMapper _mapper;
     private readonly ISmsNotificationSender _smsNotificationSender;
     private readonly BuildingWorksDbContext _context;
+    private readonly ILoader<OrderMaterialResult> _orderMaterialLoader;
 
-    public OrdersRepository(IMapper mapper, BuildingWorksDbContext context, ISmsNotificationSender smsNotificationSender)
+    public OrdersRepository(IMapper mapper, BuildingWorksDbContext context, ISmsNotificationSender smsNotificationSender, ILoader<OrderMaterialResult> orderMaterialLoader)
     {
         _mapper = mapper;
         _context = context;
         _smsNotificationSender = smsNotificationSender;
+        _orderMaterialLoader = orderMaterialLoader;
     }
 
     public async Task Add(OrderResource entity)
@@ -63,9 +66,12 @@ public class OrdersRepository : IOrdersRepository
         }
     }
 
-    public async Task<IEnumerable<OrderMaterialResult>> GetMaterials(Guid orderId)
+    public async Task<LoadResult<OrderMaterialResult>> GetMaterials(Guid orderId, LoadConditions loadConditions)
     {
-        var materials = await _context.OrderMaterial.AsNoTracking()
+        loadConditions.Filter.Add(nameof(OrderMaterial.OrdersId));
+        loadConditions.Filter.Add("=");
+        loadConditions.Filter.Add($"'{orderId}'");
+        var loadResult = await _orderMaterialLoader.Load(_context.OrderMaterial.AsNoTracking()
             .Where(order => order.OrdersId == orderId)
             .Select(entity => new OrderMaterialResult
             {
@@ -74,9 +80,9 @@ public class OrdersRepository : IOrdersRepository
                 Measure = entity.Material.Name,
                 PricePerOne = entity.PricePerOne,
                 Quantity = entity.Quantity
-            }).ToListAsync();
+            }), loadConditions);
 
-        return materials;
+        return loadResult;
     }
 
     public async Task SetAsDelivered(Guid orderId)
